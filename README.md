@@ -12,7 +12,7 @@ Simple cross-platform location manager for *Xamarin* (*Android* and *iOS*)
 ### Android
 Add permission `ACCESS_FINE_LOCATION` to your `AndroidManifest.xml`:
 
-    <uses-permission android:name=„android.permission.ACCESS_FINE_LOCATION“ />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 Set a context (must be an `Activity`) for your `SimpleLocationManager`, f.e. in `OnCreate()` of your `MainActivity`: 
 

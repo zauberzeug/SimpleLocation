@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+    <metadata>
+        <id>SimpleLocation</id>
+        <version>0.1</version>
+        <authors>Perpetual Mobile GmbH</authors>
+        <owners>Perpetual Mobile GmbH</owners>
+		<projectUrl>https://github.com/perpetual-mobile/SimpleLocation</projectUrl>
+        <licenseUrl>https://github.com/perpetual-mobile/SimpleLocation/blob/master/License.md</licenseUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Simple platform independent location manager for iOS and Android (Xamarin)</description>
+        <copyright>Copyright 2015</copyright>
+        <tags>location geolocation latitude longitude cross-platform ios android xamarin</tags>
+        <dependencies>
+            <dependency id="Xamarin.GooglePlayServices" version="22.0.0.2" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="Droid/bin/Release/Droid.dll" target="lib\MonoAndroid" />
+        <file src="iOS/bin/Release/iOS.dll" target="lib\Xamarin.iOS10" />
+    </files>
+</package>

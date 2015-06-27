@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>SimpleLocation</id>
-        <version>0.1</version>
+        <version>0.1.1</version>
         <authors>Perpetual Mobile GmbH</authors>
         <owners>Perpetual Mobile GmbH</owners>
 		<projectUrl>https://github.com/perpetual-mobile/SimpleLocation</projectUrl>
@@ -12,7 +12,9 @@
         <copyright>Copyright 2015</copyright>
         <tags>location geolocation latitude longitude cross-platform ios android xamarin</tags>
         <dependencies>
+          <group targetFramework="MonoAndroid">
             <dependency id="Xamarin.GooglePlayServices" version="22.0.0.2" />
+          </group>
         </dependencies>
     </metadata>
     <files>

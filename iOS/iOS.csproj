@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>PerpetualEngine.Location</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>iOS</AssemblyName>
+    <AssemblyName>SimpleLocation.iOS</AssemblyName>
     <ReleaseVersion>0.1.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

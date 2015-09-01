@@ -31,7 +31,7 @@ namespace PerpetualEngine.Location
             googleApiClient = new GoogleApiClientBuilder(context)
                 .AddConnectionCallbacks(this)
                 .AddOnConnectionFailedListener(this)
-                .AddApi(LocationServices.Api)
+                .AddApi(LocationServices.API)
                 .Build();
         }
 

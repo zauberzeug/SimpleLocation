@@ -44,7 +44,7 @@ namespace PerpetualEngine.Location
 				locationManager.AuthorizationChanged += (sender, e) => {
 					Console.WriteLine("[SimpleLocation: AuthorizationChanged to " + e.Status + "]");
 
-					if (e.Status == CLAuthorizationStatus.AuthorizedAlways) {
+					if (IsAuthorized(e.Status)) {
 						StartUpdates();
 					} else
 						StopLocationUpdates();
@@ -67,11 +67,11 @@ namespace PerpetualEngine.Location
 			if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0)) {
 				Console.WriteLine("[SimpleLocation: Authorization status = " + CLLocationManager.Status + "]");
 
-				if (CLLocationManager.Status != CLAuthorizationStatus.AuthorizedAlways) {
+				if (!IsAuthorized(CLLocationManager.Status)) {
 					if (!CLLocationManager.LocationServicesEnabled)
 						locationManager.StartUpdatingLocation(); // HACK: Triggers system dialog to ask user to enable location services
 					
-					locationManager.RequestAlwaysAuthorization();
+					locationManager.RequestWhenInUseAuthorization();
 				} else {
 					StartUpdates();
 				}
@@ -84,10 +84,15 @@ namespace PerpetualEngine.Location
 			Console.WriteLine("[SimpleLocation: Location services enabled: " + locationServicesEnabled + "]");
 			locationManager.StartUpdatingLocation();
 
-			if (locationServicesEnabled && CLLocationManager.Status == CLAuthorizationStatus.AuthorizedAlways) {
+			if (locationServicesEnabled && IsAuthorized(CLLocationManager.Status)) {
 				LocationUpdatesStarted();
 				Console.WriteLine("[SimpleLocation: Location updates started]");
 			}
+		}
+
+		bool IsAuthorized(CLAuthorizationStatus status)
+		{
+			return status == CLAuthorizationStatus.AuthorizedAlways || status == CLAuthorizationStatus.AuthorizedWhenInUse;
 		}
 	}
 }

@@ -22,7 +22,7 @@ namespace PerpetualEngine.Location
 		}
 
 		public void StartLocationUpdates(LocationAccuracy accuracy, double smallestDisplacementMeters,
-		                                  TimeSpan? interval = null, TimeSpan? fastestInterval = null)
+		                                 TimeSpan? interval = null, TimeSpan? fastestInterval = null)
 		{
 			locationManager.DesiredAccuracy = CLLocationAccuracy[accuracy];
 			locationManager.DistanceFilter = smallestDisplacementMeters;
@@ -84,8 +84,10 @@ namespace PerpetualEngine.Location
 			Console.WriteLine("[SimpleLocation: Location services enabled: " + locationServicesEnabled + "]");
 			locationManager.StartUpdatingLocation();
 
-			if (locationServicesEnabled && CLLocationManager.Status == CLAuthorizationStatus.AuthorizedAlways)
+			if (locationServicesEnabled && CLLocationManager.Status == CLAuthorizationStatus.AuthorizedAlways) {
+				LocationUpdatesStarted();
 				Console.WriteLine("[SimpleLocation: Location updates started]");
+			}
 		}
 	}
 }

@@ -4,46 +4,49 @@ using Xamarin.Forms;
 
 namespace Demo
 {
-    public class App : Application
-    {
-        public SimpleLocationManager SimpleLocationManager = new SimpleLocationManager();
+	public class App : Application
+	{
+		public SimpleLocationManager SimpleLocationManager = new SimpleLocationManager ();
 
-        public App()
-        {
-            var label = new Label {
-                XAlign = TextAlignment.Center,
-                Text = "Hello, SimpleLocation!",
-            };
+		string hello = "Hello, SimpleLocation!";
 
-            var startButton = new Button {
-                Text = "Start location updates",
-                Command = new Command(o => SimpleLocationManager.StartLocationUpdates(
-                    LocationAccuracy.High, 1, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1))),
-            };
+		public App ()
+		{
+			var label = new Label {
+				XAlign = TextAlignment.Center,
+				Text = hello,
+			};
 
-            var stopButton = new Button {
-                Text = "Stop location updates",
-                Command = new Command(o => SimpleLocationManager.StopLocationUpdates()),
-            };
+			var startButton = new Button {
+				Text = "Start location updates",
+				Command = new Command (o => SimpleLocationManager.StartLocationUpdates (
+					LocationAccuracy.High, 1, TimeSpan.FromSeconds (5), TimeSpan.FromSeconds (1))),
+			};
 
-            MainPage = new ContentPage {
-                Content = new StackLayout {
-                    VerticalOptions = LayoutOptions.Center,
-                    Children = {
-                        label,
-                        startButton,
-                        stopButton,
-                    },
-                },
-            };
+			var stopButton = new Button {
+				Text = "Stop location updates",
+				Command = new Command (o => SimpleLocationManager.StopLocationUpdates ()),
+			};
 
-            SimpleLocationManager.LocationUpdated += () => label.Text = "New location:\n" + SimpleLocationManager.LastLocation;
-        }
+			MainPage = new ContentPage {
+				Content = new StackLayout {
+					VerticalOptions = LayoutOptions.Center,
+					Children = {
+						label,
+						startButton,
+						stopButton,
+					},
+				},
+			};
 
-        protected override void OnSleep()
-        {
-            SimpleLocationManager.StopLocationUpdates();
-        }
-    }
+			SimpleLocationManager.LocationUpdated += () => label.Text = "New location:\n" + SimpleLocationManager.LastLocation;
+			SimpleLocationManager.LocationUpdatesStopped += () => label.Text = hello;
+		}
+
+		protected override void OnSleep ()
+		{
+			SimpleLocationManager.StopLocationUpdates ();
+		}
+	}
 }
 

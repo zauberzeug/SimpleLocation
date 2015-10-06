@@ -27,7 +27,14 @@ namespace PerpetualEngine.Location
 			locationManager.DesiredAccuracy = CLLocationAccuracy[accuracy];
 			locationManager.DistanceFilter = smallestDisplacementMeters;
 
-			CheckAppPermissions();
+			if (GlobalLocationServicesEnabled()) {
+				if (AppHasLocationPermission())
+					StartUpdates();
+				else
+					TriggerAppPermissionDialog();					
+			} else {
+				TriggerGlobalPermissionDialog();
+			}
 		}
 
 		public void StopLocationUpdates()
@@ -44,10 +51,13 @@ namespace PerpetualEngine.Location
 				locationManager.AuthorizationChanged += (sender, e) => {
 					Console.WriteLine("[SimpleLocation: AuthorizationChanged to " + e.Status + "]");
 
-					if (IsAuthorized(e.Status)) {
+					if (AppHasLocationPermission())
 						StartUpdates();
-					} else
+					else {
 						StopLocationUpdates();
+						TriggerAppPermissionDialog();
+					}
+					
 				};
 				locationManager.LocationsUpdated += (sender, e) => {
 					Console.WriteLine("[SimpleLocation: LocationsUpdated]");
@@ -62,36 +72,45 @@ namespace PerpetualEngine.Location
 			}
 		}
 
-		void CheckAppPermissions()
-		{
-			if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0)) {
-				Console.WriteLine("[SimpleLocation: Authorization status = " + CLLocationManager.Status + "]");
-
-				if (!IsAuthorized(CLLocationManager.Status)) {
-					if (!CLLocationManager.LocationServicesEnabled)
-						locationManager.StartUpdatingLocation(); // HACK: Triggers system dialog to ask user to enable location services
-					
-					locationManager.RequestWhenInUseAuthorization();
-				} else {
-					StartUpdates();
-				}
-			}
-		}
-
 		void StartUpdates()
 		{
-			var locationServicesEnabled = CLLocationManager.LocationServicesEnabled;
-			Console.WriteLine("[SimpleLocation: Location services enabled: " + locationServicesEnabled + "]");
+			var locationServicesEnabled = GlobalLocationServicesEnabled();
 			locationManager.StartUpdatingLocation();
 
-			if (locationServicesEnabled && IsAuthorized(CLLocationManager.Status)) {
+			if (locationServicesEnabled && AppHasLocationPermission()) {
 				LocationUpdatesStarted();
 				Console.WriteLine("[SimpleLocation: Location updates started]");
 			}
 		}
 
+		bool AppHasLocationPermission()
+		{
+			return UIDevice.CurrentDevice.CheckSystemVersion(8, 0) && IsAuthorized(CLLocationManager.Status);
+		}
+
+		bool GlobalLocationServicesEnabled()
+		{
+			var locationServicesEnabled = CLLocationManager.LocationServicesEnabled;
+			Console.WriteLine("[SimpleLocation: Location services enabled: " + locationServicesEnabled + "]");
+			return locationServicesEnabled;
+		}
+
+		void TriggerGlobalPermissionDialog()
+		{
+			if (!GlobalLocationServicesEnabled())
+				locationManager.StartUpdatingLocation(); // HACK: Triggers system dialog to ask user to enable location services
+		}
+
+		void TriggerAppPermissionDialog()
+		{
+			if (!AppHasLocationPermission())
+				locationManager.RequestWhenInUseAuthorization();
+		}
+
 		bool IsAuthorized(CLAuthorizationStatus status)
 		{
+			Console.WriteLine("[SimpleLocation: Authorization status = " + status + "]");
+
 			return status == CLAuthorizationStatus.AuthorizedAlways || status == CLAuthorizationStatus.AuthorizedWhenInUse;
 		}
 	}

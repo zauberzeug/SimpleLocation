@@ -5,6 +5,8 @@ using Android.Gms.Common;
 using Android.Gms.Common.Apis;
 using Android.Gms.Location;
 using Android.OS;
+using Android.Provider;
+using Android.Content;
 
 namespace PerpetualEngine.Location
 {
@@ -14,6 +16,7 @@ namespace PerpetualEngine.Location
         static Activity context;
         IGoogleApiClient googleApiClient;
         bool resolvingError;
+        const int requestResolveError = 1001;
 
         double smallestDisplacementMeters;
         int accuracy;
@@ -63,6 +66,8 @@ namespace PerpetualEngine.Location
 
         public void OnConnected(Bundle connectionHint)
         {
+            CheckLocationServicesEneabled();
+
             var location = LocationServices.FusedLocationApi.GetLastLocation(googleApiClient);
             if (location != null)
                 LastLocation = new Location(location.Latitude, location.Longitude);
@@ -84,13 +89,18 @@ namespace PerpetualEngine.Location
             if (result.HasResolution)
                 try {
                     resolvingError = true;
-                    result.StartResolutionForResult(context, 1001);
+                    result.StartResolutionForResult(context, requestResolveError);
                 } catch (Exception e) {
                     Console.WriteLine("[SimpleLocation: Connection failed. Error: {0}]", e.Message);
                     googleApiClient.Connect(); // There was an error with the resolution intent. Try again.
                 }
             else {
-                GooglePlayServicesUtil.GetErrorDialog(result.ErrorCode, context, 9000)?.Show();
+                var dialog = GoogleApiAvailability.Instance.GetErrorDialog(context, result.ErrorCode, requestResolveError);
+                dialog.DismissEvent += (sender, e) => {
+                    resolvingError = false;
+                };
+                dialog.Show();
+
                 resolvingError = true;
             }
         }
@@ -112,6 +122,23 @@ namespace PerpetualEngine.Location
             locationRequest.SetInterval(interval);
             locationRequest.SetFastestInterval(fastestInterval);
             return locationRequest;
+        }
+
+        LocationSettingsRequest.Builder CreateLocationSettingsRequestBuilder()
+        {
+            LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+            builder.AddLocationRequest(CreateLocationRequest());
+            return builder;
+        }
+
+        void CheckLocationServicesEneabled()
+        {
+            var result = LocationServices.SettingsApi.CheckLocationSettings(googleApiClient, CreateLocationSettingsRequestBuilder().Build());
+
+            result.SetResultCallback(new ResultCallback<LocationSettingsResult>() {
+                // TODO Error handling: https://developers.google.com/android/reference/com/google/android/gms/location/SettingsApi
+            });
+
         }
     }
 }

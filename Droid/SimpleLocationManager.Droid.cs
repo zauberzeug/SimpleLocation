@@ -5,18 +5,19 @@ using Android.Gms.Common;
 using Android.Gms.Common.Apis;
 using Android.Gms.Location;
 using Android.OS;
-using Android.Provider;
 using Android.Content;
 
 namespace PerpetualEngine.Location
 {
     public partial class SimpleLocationManager
-        : Java.Lang.Object, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, ILocationListener
+        : Java.Lang.Object, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, ILocationListener,
+	IResultCallback
     {
         static Activity context;
         IGoogleApiClient googleApiClient;
         bool resolvingError;
         const int requestResolveError = 1001;
+        const int requestCheckSettings = 0x1;
 
         double smallestDisplacementMeters;
         int accuracy;
@@ -66,14 +67,7 @@ namespace PerpetualEngine.Location
 
         public void OnConnected(Bundle connectionHint)
         {
-            CheckLocationServicesEneabled();
-
-            var location = LocationServices.FusedLocationApi.GetLastLocation(googleApiClient);
-            if (location != null)
-                LastLocation = new Location(location.Latitude, location.Longitude);
-
-            LocationServices.FusedLocationApi.RequestLocationUpdates(googleApiClient, CreateLocationRequest(), this);
-            Console.WriteLine("[SimpleLocation: Location updates started]");
+            CheckLocationServicesEnabled();
         }
 
         public void OnConnectionSuspended(int cause)
@@ -96,9 +90,7 @@ namespace PerpetualEngine.Location
                 }
             else {
                 var dialog = GoogleApiAvailability.Instance.GetErrorDialog(context, result.ErrorCode, requestResolveError);
-                dialog.DismissEvent += (sender, e) => {
-                    resolvingError = false;
-                };
+                dialog.DismissEvent += (sender, e) => resolvingError = false;
                 dialog.Show();
 
                 resolvingError = true;
@@ -126,19 +118,50 @@ namespace PerpetualEngine.Location
 
         LocationSettingsRequest.Builder CreateLocationSettingsRequestBuilder()
         {
-            LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+            var builder = new LocationSettingsRequest.Builder();
             builder.AddLocationRequest(CreateLocationRequest());
             return builder;
         }
 
-        void CheckLocationServicesEneabled()
+        void CheckLocationServicesEnabled()
         {
             var result = LocationServices.SettingsApi.CheckLocationSettings(googleApiClient, CreateLocationSettingsRequestBuilder().Build());
+            result.SetResultCallback(this);
+        }
 
-            result.SetResultCallback(new ResultCallback<LocationSettingsResult>() {
-                // TODO Error handling: https://developers.google.com/android/reference/com/google/android/gms/location/SettingsApi
-            });
+        public void OnResult(Java.Lang.Object x0)
+        {
+            var locationSettingsResult = x0 as LocationSettingsResult;
 
+            var status = locationSettingsResult.Status;
+            switch (status.StatusCode) {
+                case CommonStatusCodes.Success:
+                    Console.WriteLine("All location settings are satisfied.");
+                    StartUpdates();
+                    break;
+                case CommonStatusCodes.ResolutionRequired:
+                    Console.WriteLine("Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
+                    try {
+                        status.StartResolutionForResult(context, requestCheckSettings);
+                        // TODO Handle result in OnActivityResult 
+                    } catch (IntentSender.SendIntentException) {
+                        Console.WriteLine("PendingIntent unable to execute request.");
+                    }
+                    break;
+                case LocationSettingsStatusCodes.SettingsChangeUnavailable:
+                    Console.WriteLine("Location settings are inadequate, and cannot be fixed here. Dialog not created.");
+                    break;
+            }
+        }
+
+        void StartUpdates()
+        {
+            var location = LocationServices.FusedLocationApi.GetLastLocation(googleApiClient);
+            if (location != null)
+                LastLocation = new Location(location.Latitude, location.Longitude);
+
+            LocationServices.FusedLocationApi.RequestLocationUpdates(googleApiClient, CreateLocationRequest(), this);
+            Console.WriteLine("[SimpleLocation: Location updates started]");
         }
     }
 }

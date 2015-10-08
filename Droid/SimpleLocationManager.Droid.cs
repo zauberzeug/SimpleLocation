@@ -9,9 +9,8 @@ using Android.Content;
 
 namespace PerpetualEngine.Location
 {
-    public partial class SimpleLocationManager
-        : Java.Lang.Object, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, ILocationListener,
-	IResultCallback
+    public partial class SimpleLocationManager : Java.Lang.Object, 
+        IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, ILocationListener, IResultCallback
     {
         static Activity context;
         IGoogleApiClient googleApiClient;
@@ -144,13 +143,30 @@ namespace PerpetualEngine.Location
                     SimpleLocationLogger.Log("Location settings are not satisfied");
                     try {
                         status.StartResolutionForResult(context, requestCheckSettings);
-                        // TODO Handle result in OnActivityResult 
+                        // Handle result in OnActivityResult of your Activity by calling HandleResolutionResultForLocationSettings
                     } catch (IntentSender.SendIntentException) {
                         SimpleLocationLogger.Log("PendingIntent unable to execute request");
                     }
                     break;
                 case LocationSettingsStatusCodes.SettingsChangeUnavailable:
                     SimpleLocationLogger.Log("Location settings are inadequate and cannot be fixed here");
+                    break;
+            }
+        }
+
+        public void HandleResolutionResultForLocationSettings(int requestCode, Result resultCode)
+        {
+            switch (requestCode) {
+                case requestCheckSettings:
+                    switch (resultCode) {
+                        case Result.Ok:
+                            SimpleLocationLogger.Log("User agreed to make required location settings changes");
+                            StartUpdates();
+                            break;
+                        case Result.Canceled:
+                            SimpleLocationLogger.Log("User chose not to make required location settings changes");
+                            break;
+                    }
                     break;
             }
         }

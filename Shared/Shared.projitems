@@ -12,5 +12,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Location.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LocationAccuracy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SimpleLocationManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SimpleLocationLogger.cs" />
   </ItemGroup>
 </Project>

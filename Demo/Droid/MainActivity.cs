@@ -15,6 +15,8 @@ namespace Demo.Droid
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : FormsApplicationActivity
     {
+        App app;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -23,7 +25,16 @@ namespace Demo.Droid
 
             SimpleLocationManager.SetContext(this);
 
-            LoadApplication(new App());
+            app = new App();
+
+            LoadApplication(app);
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Android.Content.Intent data)
+        {
+            app.SimpleLocationManager.HandleResolutionResultForLocationSettings(requestCode, resultCode);
+
+            base.OnActivityResult(requestCode, resultCode, data);
         }
     }
 }

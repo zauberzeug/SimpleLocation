@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>SimpleLocation</id>
-        <version>0.1.6</version>
+        <version>0.1.7</version>
         <authors>Perpetual Mobile GmbH</authors>
         <owners>Perpetual Mobile GmbH</owners>
 		<projectUrl>https://github.com/perpetual-mobile/SimpleLocation</projectUrl>

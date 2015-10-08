@@ -6,113 +6,113 @@ using UIKit;
 
 namespace PerpetualEngine.Location
 {
-	public partial class SimpleLocationManager
-	{
-		CLLocationManager locationManager;
+    public partial class SimpleLocationManager
+    {
+        CLLocationManager locationManager;
 
-		Dictionary<LocationAccuracy, double> CLLocationAccuracy = new Dictionary<LocationAccuracy, double> {
-			{ LocationAccuracy.High, CLLocation.AccuracyBest },
-			{ LocationAccuracy.Balanced, CLLocation.AccuracyHundredMeters },
-			{ LocationAccuracy.Low, CLLocation.AccuracyKilometer },
-		};
+        Dictionary<LocationAccuracy, double> CLLocationAccuracy = new Dictionary<LocationAccuracy, double> {
+            { LocationAccuracy.High, CLLocation.AccuracyBest },
+            { LocationAccuracy.Balanced, CLLocation.AccuracyHundredMeters },
+            { LocationAccuracy.Low, CLLocation.AccuracyKilometer },
+        };
 
-		public SimpleLocationManager()
-		{
-			InitLocationManager();
-		}
+        public SimpleLocationManager()
+        {
+            InitLocationManager();
+        }
 
-		public void StartLocationUpdates(LocationAccuracy accuracy, double smallestDisplacementMeters,
-		                                 TimeSpan? interval = null, TimeSpan? fastestInterval = null)
-		{
-			locationManager.DesiredAccuracy = CLLocationAccuracy[accuracy];
-			locationManager.DistanceFilter = smallestDisplacementMeters;
+        public void StartLocationUpdates(LocationAccuracy accuracy, double smallestDisplacementMeters,
+                                         TimeSpan? interval = null, TimeSpan? fastestInterval = null)
+        {
+            locationManager.DesiredAccuracy = CLLocationAccuracy[accuracy];
+            locationManager.DistanceFilter = smallestDisplacementMeters;
 
-			if (GlobalLocationServicesEnabled()) {
-				if (AppHasLocationPermission())
-					StartUpdates();
-				else
-					TriggerAppPermissionDialog();					
-			} else {
-				TriggerGlobalPermissionDialog();
-			}
-		}
+            if (GlobalLocationServicesEnabled()) {
+                if (AppHasLocationPermission())
+                    StartUpdates();
+                else
+                    TriggerAppPermissionDialog();					
+            } else {
+                TriggerGlobalPermissionDialog();
+            }
+        }
 
-		public void StopLocationUpdates()
-		{
-			locationManager.StopUpdatingLocation();
-			LocationUpdatesStopped();
-			Console.WriteLine("[SimpleLocation: Location updates stopped]");
-		}
+        public void StopLocationUpdates()
+        {
+            locationManager.StopUpdatingLocation();
+            LocationUpdatesStopped();
+            SimpleLocationLogger.Log("Location updates stopped");
+        }
 
-		void InitLocationManager()
-		{
-			if (locationManager == null) {
-				locationManager = new CLLocationManager();
-				locationManager.AuthorizationChanged += (sender, e) => {
-					Console.WriteLine("[SimpleLocation: AuthorizationChanged to " + e.Status + "]");
+        void InitLocationManager()
+        {
+            if (locationManager == null) {
+                locationManager = new CLLocationManager();
+                locationManager.AuthorizationChanged += (sender, e) => {
+                    SimpleLocationLogger.Log("AuthorizationChanged to " + e.Status);
 
-					if (AppHasLocationPermission())
-						StartUpdates();
-					else {
-						StopLocationUpdates();
-						TriggerAppPermissionDialog();
-					}
+                    if (AppHasLocationPermission())
+                        StartUpdates();
+                    else {
+                        StopLocationUpdates();
+                        TriggerAppPermissionDialog();
+                    }
 					
-				};
-				locationManager.LocationsUpdated += (sender, e) => {
-					Console.WriteLine("[SimpleLocation: LocationsUpdated]");
+                };
+                locationManager.LocationsUpdated += (sender, e) => {
+                    SimpleLocationLogger.Log("Locations updated");
 
-					var location = e.Locations.Last();
-					LastLocation = new Location(location.Coordinate.Latitude, location.Coordinate.Longitude);
-					LocationUpdated();
-				};
+                    var location = e.Locations.Last();
+                    LastLocation = new Location(location.Coordinate.Latitude, location.Coordinate.Longitude);
+                    LocationUpdated();
+                };
 
-				if (locationManager.Location != null)
-					LastLocation = new Location(locationManager.Location.Coordinate.Latitude, locationManager.Location.Coordinate.Longitude);
-			}
-		}
+                if (locationManager.Location != null)
+                    LastLocation = new Location(locationManager.Location.Coordinate.Latitude, locationManager.Location.Coordinate.Longitude);
+            }
+        }
 
-		void StartUpdates()
-		{
-			var locationServicesEnabled = GlobalLocationServicesEnabled();
-			locationManager.StartUpdatingLocation();
+        void StartUpdates()
+        {
+            var locationServicesEnabled = GlobalLocationServicesEnabled();
+            locationManager.StartUpdatingLocation();
 
-			if (locationServicesEnabled && AppHasLocationPermission()) {
-				LocationUpdatesStarted();
-				Console.WriteLine("[SimpleLocation: Location updates started]");
-			}
-		}
+            if (locationServicesEnabled && AppHasLocationPermission()) {
+                LocationUpdatesStarted();
+                SimpleLocationLogger.Log("Location updates started");
+            }
+        }
 
-		bool AppHasLocationPermission()
-		{
-			return UIDevice.CurrentDevice.CheckSystemVersion(8, 0) && IsAuthorized(CLLocationManager.Status);
-		}
+        bool AppHasLocationPermission()
+        {
+            return UIDevice.CurrentDevice.CheckSystemVersion(8, 0) && IsAuthorized(CLLocationManager.Status);
+        }
 
-		bool GlobalLocationServicesEnabled()
-		{
-			var locationServicesEnabled = CLLocationManager.LocationServicesEnabled;
-			Console.WriteLine("[SimpleLocation: Location services enabled: " + locationServicesEnabled + "]");
-			return locationServicesEnabled;
-		}
+        bool GlobalLocationServicesEnabled()
+        {
+            var locationServicesEnabled = CLLocationManager.LocationServicesEnabled;
+            SimpleLocationLogger.Log("Location services enabled = " + locationServicesEnabled);
+            return locationServicesEnabled;
+        }
 
-		void TriggerGlobalPermissionDialog()
-		{
-			if (!GlobalLocationServicesEnabled())
-				locationManager.StartUpdatingLocation(); // HACK: Triggers system dialog to ask user to enable location services
-		}
+        void TriggerGlobalPermissionDialog()
+        {
+            if (!GlobalLocationServicesEnabled())
+                locationManager.StartUpdatingLocation(); // HACK: Triggers system dialog to ask user to enable location services
+        }
 
-		void TriggerAppPermissionDialog()
-		{
-			if (!AppHasLocationPermission())
-				locationManager.RequestWhenInUseAuthorization();
-		}
+        void TriggerAppPermissionDialog()
+        {
+            if (!AppHasLocationPermission())
+                locationManager.RequestWhenInUseAuthorization();
+        }
 
-		bool IsAuthorized(CLAuthorizationStatus status)
-		{
-			Console.WriteLine("[SimpleLocation: Authorization status = " + status + "]");
+        bool IsAuthorized(CLAuthorizationStatus status)
+        {
+            SimpleLocationLogger.Log("Authorization status = " + status);
 
-			return status == CLAuthorizationStatus.AuthorizedAlways || status == CLAuthorizationStatus.AuthorizedWhenInUse;
-		}
-	}
+            return status == CLAuthorizationStatus.AuthorizedAlways || status == CLAuthorizationStatus.AuthorizedWhenInUse;
+        }
+    }
 }
 

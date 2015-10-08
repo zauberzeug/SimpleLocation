@@ -17,7 +17,7 @@ namespace PerpetualEngine.Location
         IGoogleApiClient googleApiClient;
         bool resolvingError;
         const int requestResolveError = 1001;
-        const int requestCheckSettings = 0x1;
+        const int requestCheckSettings = 2002;
 
         double smallestDisplacementMeters;
         int accuracy;
@@ -62,7 +62,8 @@ namespace PerpetualEngine.Location
             
             LocationServices.FusedLocationApi.RemoveLocationUpdates(googleApiClient, this);
             googleApiClient.Disconnect();
-            Console.WriteLine("[SimpleLocation: Location updates stopped]");
+            LocationUpdatesStopped();
+            SimpleLocationLogger.Log("Location updates stopped");
         }
 
         public void OnConnected(Bundle connectionHint)
@@ -72,7 +73,7 @@ namespace PerpetualEngine.Location
 
         public void OnConnectionSuspended(int cause)
         {
-            Console.WriteLine("[SimpleLocation: Connection suspended. Cause: {0}]", cause);
+            SimpleLocationLogger.Log("Connection suspended. Cause: " + cause);
         }
 
         public void OnConnectionFailed(ConnectionResult result)
@@ -85,7 +86,7 @@ namespace PerpetualEngine.Location
                     resolvingError = true;
                     result.StartResolutionForResult(context, requestResolveError);
                 } catch (Exception e) {
-                    Console.WriteLine("[SimpleLocation: Connection failed. Error: {0}]", e.Message);
+                    SimpleLocationLogger.Log("Connection failed. Error: " + e.Message);
                     googleApiClient.Connect(); // There was an error with the resolution intent. Try again.
                 }
             else {
@@ -129,27 +130,27 @@ namespace PerpetualEngine.Location
             result.SetResultCallback(this);
         }
 
-        public void OnResult(Java.Lang.Object x0)
+        public void OnResult(Java.Lang.Object result)
         {
-            var locationSettingsResult = x0 as LocationSettingsResult;
+            var locationSettingsResult = result as LocationSettingsResult;
 
             var status = locationSettingsResult.Status;
             switch (status.StatusCode) {
                 case CommonStatusCodes.Success:
-                    Console.WriteLine("All location settings are satisfied.");
+                    SimpleLocationLogger.Log("All location settings are satisfied");
                     StartUpdates();
                     break;
                 case CommonStatusCodes.ResolutionRequired:
-                    Console.WriteLine("Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
+                    SimpleLocationLogger.Log("Location settings are not satisfied");
                     try {
                         status.StartResolutionForResult(context, requestCheckSettings);
                         // TODO Handle result in OnActivityResult 
                     } catch (IntentSender.SendIntentException) {
-                        Console.WriteLine("PendingIntent unable to execute request.");
+                        SimpleLocationLogger.Log("PendingIntent unable to execute request");
                     }
                     break;
                 case LocationSettingsStatusCodes.SettingsChangeUnavailable:
-                    Console.WriteLine("Location settings are inadequate, and cannot be fixed here. Dialog not created.");
+                    SimpleLocationLogger.Log("Location settings are inadequate and cannot be fixed here");
                     break;
             }
         }
@@ -161,7 +162,7 @@ namespace PerpetualEngine.Location
                 LastLocation = new Location(location.Latitude, location.Longitude);
 
             LocationServices.FusedLocationApi.RequestLocationUpdates(googleApiClient, CreateLocationRequest(), this);
-            Console.WriteLine("[SimpleLocation: Location updates started]");
+            SimpleLocationLogger.Log("Location updates started");
         }
     }
 }

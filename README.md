@@ -28,6 +28,8 @@ In case the device's location settings are disabled, the user gets informed by a
     }
 
 ### iOS
+**Important:** Currently SimpleLocation only works on iOS 8 or higher.
+
 Add entries for `NSLocationAlwaysUsageDescription` and `NSLocationWhenInUseUsageDescription` to your `Info.plist`:
 
     <key>NSLocationAlwaysUsageDescription</key>

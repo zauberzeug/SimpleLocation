@@ -2,11 +2,14 @@
 
 namespace PerpetualEngine.Location
 {
-    public class SimpleLocationLogger
+    public static class SimpleLocationLogger
     {
+        public static bool Enabled = true;
+
         public static void Log(string message)
         {
-            Console.WriteLine("[SimpleLocation: {0}]", message);
+            if (Enabled)
+                Console.WriteLine("[SimpleLocation: {0}]", message);
         }
 
     }

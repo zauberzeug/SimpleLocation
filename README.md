@@ -59,3 +59,9 @@ Now every time the location gets successfully updated  `SimpleLocationManager.La
 To stop location updates just call
 
     simpleLocMan.StopLocationUpdates();
+
+## Logging
+
+SimpleLocation internally uses its own logger, a static class called `SimpleLocationLogger`. Its log statements appear like `[SimpleLocation: some message]`. You can disable logging by calling
+
+    SimpleLocationLogger.Enabled = false;

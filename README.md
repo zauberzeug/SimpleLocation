@@ -23,7 +23,7 @@ In case the device's location settings are disabled, the user gets informed by a
 
     protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
     {
-        mySimpleLocationManager.HandleResolutionResultForLocationSettings(requestCode, resultCode);
+        simpleLocationManager.HandleResolutionResultForLocationSettings(requestCode, resultCode);
         ...  
     }
 
@@ -40,27 +40,27 @@ Add entries for `NSLocationAlwaysUsageDescription` and `NSLocationWhenInUseUsage
 ## Usage
 Create an instance of `SimpleLocationManager`:
 
-    var simpleLocMan = new SimpleLocationManager();
+    var simpleLocationManager = new SimpleLocationManager();
 
 Define what should happen when the location gets updated:
 
-    simpleLocMan.LocationUpdated += delegate {
-        Console.WriteLine(simpleLocMan.LastLocation);
+    simpleLocationManager.LocationUpdated += delegate {
+        Console.WriteLine(simpleLocationManager.LastLocation);
     }
 
 To start location updates call
 
-    simpleLocMan.StartLocationUpdates(LocationAccuracy.Balanced, 5, TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(30));
+    simpleLocationManager.StartLocationUpdates(LocationAccuracy.Balanced, 5, TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(30));
 
 The `TimeSpan` parameters will be taken into consideration **only** on *Android* (see [here](https://developers.google.com/android/reference/com/google/android/gms/location/LocationRequest#setInterval(long)) for `interval` and [here](https://developers.google.com/android/reference/com/google/android/gms/location/LocationRequest#setFastestInterval(long)) for `fastestInterval`). On *iOS* just call
 
-    simpleLocMan.StartLocationUpdates(LocationAccuracy.Balanced, 5);
+    simpleLocationManager.StartLocationUpdates(LocationAccuracy.Balanced, 5);
 
 Now every time the location gets successfully updated  `SimpleLocationManager.LastLocation` gets updated and `SimpleLocationManager.LocationUpdated` gets called.
 
 To stop location updates just call
 
-    simpleLocMan.StopLocationUpdates();
+    simpleLocationManager.StopLocationUpdates();
 
 ## Logging
 

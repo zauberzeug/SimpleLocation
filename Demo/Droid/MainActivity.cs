@@ -24,6 +24,7 @@ namespace Demo.Droid
             Forms.Init(this, savedInstanceState);
 
             SimpleLocationManager.SetContext(this);
+            SimpleLocationManager.SetShowUseLocationDialog(SimpleLocationManager.ShowUseLocationDialog.Once);
             SimpleLocationManager.HideNeverButtonOnUseLocationDialog = true;
 
             app = new App();

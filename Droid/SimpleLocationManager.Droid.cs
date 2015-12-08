@@ -13,6 +13,8 @@ namespace PerpetualEngine.Location
         IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, ILocationListener, IResultCallback
     {
         static Activity context;
+        static ShowUseLocationDialog howOftenShowUseLocationDialog = ShowUseLocationDialog.Always;
+        static bool showUseLocationDialog = true;
         IGoogleApiClient googleApiClient;
         bool resolvingError;
         const int requestResolveError = 1001;
@@ -43,6 +45,11 @@ namespace PerpetualEngine.Location
         public static void SetContext(Activity activity)
         {
             context = activity;
+        }
+
+        public static void SetShowUseLocationDialog(ShowUseLocationDialog howOften)
+        {
+            howOftenShowUseLocationDialog = howOften;
         }
 
         public void StartLocationUpdates(LocationAccuracy accuracy, double smallestDisplacementMeters,
@@ -128,8 +135,10 @@ namespace PerpetualEngine.Location
 
         void CheckLocationServicesEnabled()
         {
-            var result = LocationServices.SettingsApi.CheckLocationSettings(googleApiClient, CreateLocationSettingsRequestBuilder().Build());
-            result.SetResultCallback(this);
+            if (showUseLocationDialog) {
+                var result = LocationServices.SettingsApi.CheckLocationSettings(googleApiClient, CreateLocationSettingsRequestBuilder().Build());
+                result.SetResultCallback(this);
+            }
         }
 
         public void OnResult(Java.Lang.Object result)
@@ -168,6 +177,8 @@ namespace PerpetualEngine.Location
                             break;
                         case Result.Canceled:
                             SimpleLocationLogger.Log("User chose not to make required location settings changes");
+                            if (howOftenShowUseLocationDialog == ShowUseLocationDialog.Once)
+                                showUseLocationDialog = false;
                             break;
                     }
                     break;
@@ -182,6 +193,12 @@ namespace PerpetualEngine.Location
 
             LocationServices.FusedLocationApi.RequestLocationUpdates(googleApiClient, CreateLocationRequest(), this);
             SimpleLocationLogger.Log("Location updates started");
+        }
+
+        public enum ShowUseLocationDialog
+        {
+            Always,
+            Once,
         }
     }
 }

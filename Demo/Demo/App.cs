@@ -27,8 +27,16 @@ namespace Demo
                     Children = {
                         helloLabel,
                         locationLabel,
-                        startButton,
-                        stopButton,
+                        new StackLayout {
+                            Orientation = StackOrientation.Horizontal,
+                            HorizontalOptions = LayoutOptions.Center,
+                            VerticalOptions = LayoutOptions.End,
+                            Spacing = 20,
+                            Children = {
+                                startButton,
+                                stopButton,
+                            }
+                        }
                     },
                 },
             };
@@ -50,7 +58,7 @@ namespace Demo
         void InitViews()
         {
             helloLabel = new Label {
-                VerticalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.Start,
                 XAlign = TextAlignment.Center,
                 Text = hello,
             };
@@ -61,19 +69,19 @@ namespace Demo
             };
 
             startButton = new Button {
-                VerticalOptions = LayoutOptions.End,
+                WidthRequest = 100,
                 BackgroundColor = Color.Green,
                 TextColor = Device.OnPlatform(Color.Black, Color.White, Color.White),
-                Text = "Start location updates",
+                Text = "Start",
                 Command = new Command(o => SimpleLocationManager.StartLocationUpdates(
                     LocationAccuracy.High, 1, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1))),
             };
 
             stopButton = new Button {
-                VerticalOptions = LayoutOptions.End,
+                WidthRequest = 100,
                 BackgroundColor = Color.Red,
                 TextColor = Device.OnPlatform(Color.Black, Color.White, Color.White),
-                Text = "Stop location updates",
+                Text = "Stop",
                 Command = new Command(o => SimpleLocationManager.StopLocationUpdates()),
             };
         }

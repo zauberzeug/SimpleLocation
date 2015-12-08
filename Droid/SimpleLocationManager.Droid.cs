@@ -38,6 +38,8 @@ namespace PerpetualEngine.Location
                 .Build();
         }
 
+        public static bool HideNeverButtonOnUseLocationDialog{ get; set; }
+
         public static void SetContext(Activity activity)
         {
             context = activity;
@@ -119,6 +121,7 @@ namespace PerpetualEngine.Location
         LocationSettingsRequest.Builder CreateLocationSettingsRequestBuilder()
         {
             var builder = new LocationSettingsRequest.Builder();
+            builder.SetAlwaysShow(HideNeverButtonOnUseLocationDialog);
             builder.AddLocationRequest(CreateLocationRequest());
             return builder;
         }

@@ -48,7 +48,7 @@ namespace PerpetualEngine.Location
             if (locationManager == null) {
                 locationManager = new CLLocationManager();
                 locationManager.AuthorizationChanged += (sender, e) => {
-                    SimpleLocationLogger.Log("AuthorizationChanged to " + e.Status);
+                    SimpleLocationLogger.Log("Authorization changed to " + e.Status);
 
                     if (AppHasLocationPermission())
                         StartUpdates();

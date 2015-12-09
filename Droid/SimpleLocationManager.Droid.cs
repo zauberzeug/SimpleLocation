@@ -193,6 +193,7 @@ namespace PerpetualEngine.Location
 
             LocationServices.FusedLocationApi.RequestLocationUpdates(googleApiClient, CreateLocationRequest(), this);
             SimpleLocationLogger.Log("Location updates started");
+            LocationUpdatesStarted();
         }
 
         public enum ShowUseLocationDialog

@@ -9,6 +9,7 @@ namespace PerpetualEngine.Location
     public partial class SimpleLocationManager
     {
         CLLocationManager locationManager;
+        bool isInitializing = true;
 
         Dictionary<LocationAccuracy, double> CLLocationAccuracy = new Dictionary<LocationAccuracy, double> {
             { LocationAccuracy.High, CLLocation.AccuracyBest },
@@ -41,6 +42,11 @@ namespace PerpetualEngine.Location
             if (locationManager == null) {
                 locationManager = new CLLocationManager();
                 locationManager.AuthorizationChanged += (sender, e) => {
+                    if (isInitializing) { // Necessary because AuthorizationChanged get's called even on App start
+                        isInitializing = false;
+                        return;
+                    }
+
                     SimpleLocationLogger.Log("Authorization changed to " + e.Status);
 
                     if (AppHasLocationPermission())

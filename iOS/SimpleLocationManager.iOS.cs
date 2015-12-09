@@ -82,7 +82,7 @@ namespace PerpetualEngine.Location
 
         bool AppHasLocationPermission()
         {
-            return UIDevice.CurrentDevice.CheckSystemVersion(8, 0) && IsAuthorized(CLLocationManager.Status);
+            return UIDevice.CurrentDevice.CheckSystemVersion(8, 0) && IsAuthorized();
         }
 
         bool GlobalLocationServicesEnabled()
@@ -104,10 +104,10 @@ namespace PerpetualEngine.Location
                 locationManager.RequestWhenInUseAuthorization();
         }
 
-        bool IsAuthorized(CLAuthorizationStatus status)
+        bool IsAuthorized()
         {
+            var status = CLLocationManager.Status;
             SimpleLocationLogger.Log("Authorization status = " + status);
-
             return status == CLAuthorizationStatus.AuthorizedAlways || status == CLAuthorizationStatus.AuthorizedWhenInUse;
         }
     }

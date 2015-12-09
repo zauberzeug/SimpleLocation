@@ -71,7 +71,6 @@ namespace PerpetualEngine.Location
             LocationServices.FusedLocationApi.RemoveLocationUpdates(googleApiClient, this);
             googleApiClient.Disconnect();
             LocationUpdatesStopped();
-            SimpleLocationLogger.Log("Location updates stopped");
         }
 
         public void OnConnected(Bundle connectionHint)
@@ -192,7 +191,6 @@ namespace PerpetualEngine.Location
                 LastLocation = new Location(location.Latitude, location.Longitude);
 
             LocationServices.FusedLocationApi.RequestLocationUpdates(googleApiClient, CreateLocationRequest(), this);
-            SimpleLocationLogger.Log("Location updates started");
             LocationUpdatesStarted();
         }
 

@@ -41,7 +41,6 @@ namespace PerpetualEngine.Location
         {
             locationManager.StopUpdatingLocation();
             LocationUpdatesStopped();
-            SimpleLocationLogger.Log("Location updates stopped");
         }
 
         void InitLocationManager()
@@ -60,7 +59,6 @@ namespace PerpetualEngine.Location
 					
                 };
                 locationManager.LocationsUpdated += (sender, e) => {
-                    SimpleLocationLogger.Log("Locations updated");
 
                     var location = e.Locations.Last();
                     LastLocation = new Location(location.Coordinate.Latitude, location.Coordinate.Longitude);
@@ -79,7 +77,6 @@ namespace PerpetualEngine.Location
 
             if (locationServicesEnabled && AppHasLocationPermission()) {
                 LocationUpdatesStarted();
-                SimpleLocationLogger.Log("Location updates started");
             }
         }
 

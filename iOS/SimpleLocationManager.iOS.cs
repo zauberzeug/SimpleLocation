@@ -27,14 +27,7 @@ namespace PerpetualEngine.Location
             locationManager.DesiredAccuracy = CLLocationAccuracy[accuracy];
             locationManager.DistanceFilter = smallestDisplacementMeters;
 
-            if (GlobalLocationServicesEnabled()) {
-                if (AppHasLocationPermission())
-                    StartUpdates();
-                else
-                    TriggerAppPermissionDialog();					
-            } else {
-                TriggerGlobalPermissionDialog();
-            }
+            TryToStartUpdates();
         }
 
         public void StopLocationUpdates()
@@ -51,15 +44,14 @@ namespace PerpetualEngine.Location
                     SimpleLocationLogger.Log("Authorization changed to " + e.Status);
 
                     if (AppHasLocationPermission())
-                        StartUpdates();
+                        TryToStartUpdates();
                     else {
                         StopLocationUpdates();
                         TriggerAppPermissionDialog();
                     }
-					
                 };
-                locationManager.LocationsUpdated += (sender, e) => {
 
+                locationManager.LocationsUpdated += (sender, e) => {
                     var location = e.Locations.Last();
                     LastLocation = new Location(location.Coordinate.Latitude, location.Coordinate.Longitude);
                     LocationUpdated();
@@ -70,13 +62,17 @@ namespace PerpetualEngine.Location
             }
         }
 
-        void StartUpdates()
+        void TryToStartUpdates()
         {
-            var locationServicesEnabled = GlobalLocationServicesEnabled();
-            locationManager.StartUpdatingLocation();
-
-            if (locationServicesEnabled && AppHasLocationPermission()) {
-                LocationUpdatesStarted();
+            if (GlobalLocationServicesEnabled()) {
+                if (AppHasLocationPermission()) {
+                    locationManager.StartUpdatingLocation(); 
+                    LocationUpdatesStarted();
+                } else {
+                    TriggerAppPermissionDialog();                   
+                }
+            } else {
+                TriggerGlobalPermissionDialog();
             }
         }
 
@@ -94,14 +90,12 @@ namespace PerpetualEngine.Location
 
         void TriggerGlobalPermissionDialog()
         {
-            if (!GlobalLocationServicesEnabled())
-                locationManager.StartUpdatingLocation(); // HACK: Triggers system dialog to ask user to enable location services
+            locationManager.StartUpdatingLocation(); // HACK: Triggers system dialog to ask user to enable location services
         }
 
         void TriggerAppPermissionDialog()
         {
-            if (!AppHasLocationPermission())
-                locationManager.RequestWhenInUseAuthorization();
+            locationManager.RequestWhenInUseAuthorization();
         }
 
         bool IsAuthorized()

@@ -13,7 +13,6 @@ namespace PerpetualEngine.Location
         IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, ILocationListener, IResultCallback
     {
         static Activity context;
-        static ShowUseLocationDialog howOftenShowUseLocationDialog = ShowUseLocationDialog.Always;
         static bool showUseLocationDialog = true;
         IGoogleApiClient googleApiClient;
         bool resolvingError;
@@ -42,14 +41,11 @@ namespace PerpetualEngine.Location
 
         public static bool HideNeverButtonOnUseLocationDialog{ get; set; }
 
+        public static ShowUseLocationDialog HowOftenShowUseLocationDialog { get; set; } = ShowUseLocationDialog.Always;
+
         public static void SetContext(Activity activity)
         {
             context = activity;
-        }
-
-        public static void SetShowUseLocationDialog(ShowUseLocationDialog howOften)
-        {
-            howOftenShowUseLocationDialog = howOften;
         }
 
         public void StartLocationUpdates(LocationAccuracy accuracy, double smallestDisplacementMeters,
@@ -176,7 +172,7 @@ namespace PerpetualEngine.Location
                             break;
                         case Result.Canceled:
                             SimpleLocationLogger.Log("User chose not to make required location settings changes");
-                            if (howOftenShowUseLocationDialog == ShowUseLocationDialog.Once)
+                            if (HowOftenShowUseLocationDialog == ShowUseLocationDialog.Once)
                                 showUseLocationDialog = false;
                             break;
                     }

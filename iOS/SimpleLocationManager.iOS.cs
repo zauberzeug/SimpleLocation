@@ -10,6 +10,7 @@ namespace PerpetualEngine.Location
     {
         CLLocationManager locationManager;
         bool isInitializing = true;
+        bool shouldBeUpdatingLocation;
 
         Dictionary<LocationAccuracy, double> CLLocationAccuracy = new Dictionary<LocationAccuracy, double> {
             { LocationAccuracy.High, CLLocation.AccuracyBest },
@@ -25,6 +26,7 @@ namespace PerpetualEngine.Location
         public void StartLocationUpdates(LocationAccuracy accuracy, double smallestDisplacementMeters,
                                          TimeSpan? interval = null, TimeSpan? fastestInterval = null)
         {
+            shouldBeUpdatingLocation = true;
             locationManager.DesiredAccuracy = CLLocationAccuracy[accuracy];
             locationManager.DistanceFilter = smallestDisplacementMeters;
 
@@ -33,6 +35,7 @@ namespace PerpetualEngine.Location
 
         public void StopLocationUpdates()
         {
+            shouldBeUpdatingLocation = false;
             locationManager.StopUpdatingLocation();
             LocationUpdatesStopped();
         }
@@ -49,9 +52,10 @@ namespace PerpetualEngine.Location
 
                     SimpleLocationLogger.Log("Authorization changed to " + e.Status);
 
-                    if (AppHasLocationPermission())
-                        TryToStartUpdates();
-                    else {
+                    if (AppHasLocationPermission()) {
+                        if (shouldBeUpdatingLocation)
+                            TryToStartUpdates();
+                    } else {
                         StopLocationUpdates();
                         TriggerAppPermissionDialog();
                     }

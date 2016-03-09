@@ -33,9 +33,28 @@ In case the device's location settings are disabled, the user gets informed by a
 Add entries for `NSLocationAlwaysUsageDescription` and `NSLocationWhenInUseUsageDescription` to your `Info.plist`:
 
     <key>NSLocationAlwaysUsageDescription</key>
-    <string>Can we always use your location</string>
+    <string>We want to use your location when the app is in background</string>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Can we use your location</string>
+    <string>We want to use your location when the app is in foreground</string>
+
+**Using background location:** If your app is supposed to get location updates while it is in the background, you have to do some additional setup.
+
+Enable background mode and add location in your `Info.plist`:
+
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
+
+Enable requesting authorization for usage in background, f.e. in your `AppDelegate` before starting location updates:
+
+	SimpleLocationManager.RequestAlwaysAuthorization = true;
+
+*Optionally* you can let iOS pause location updates automatically by setting
+
+	SimpleLocationManager.PausesLocationUpdatesAutomatically = true;
+
+On some devices this boolean is set to `true` by default, but the default value for `SimpleLocationManager` is `false`.
 
 ## Usage
 Create an instance of `SimpleLocationManager`:

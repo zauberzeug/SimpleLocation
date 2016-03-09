@@ -1,4 +1,5 @@
 ﻿using Foundation;
+using PerpetualEngine.Location;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -11,6 +12,8 @@ namespace Demo.iOS
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
             Forms.Init();
+
+            SimpleLocationManager.RequestAlwaysAuthorization = true;
 
             LoadApplication(new App());
 

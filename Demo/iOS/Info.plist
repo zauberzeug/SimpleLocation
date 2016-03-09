@@ -60,10 +60,14 @@
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Can we always use your location</string>
+	<string>We want ot use your location when the app is in background</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Can we use your location</string>
+	<string>We want ot use your location when the app is in foreground</string>
 	<key>CFBundleName</key>
 	<string>SimpleLocationDemo</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
 </dict>
 </plist>

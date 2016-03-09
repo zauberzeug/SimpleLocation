@@ -69,5 +69,7 @@
 	<array>
 		<string>location</string>
 	</array>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 </dict>
 </plist>

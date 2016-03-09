@@ -42,10 +42,12 @@ namespace Demo
             };
 
             SimpleLocationManager.LocationUpdated += delegate {
-                locationLabel.Text = string.Format(
-                    "New location:\n\n Latitude={0}\nLongitude={1}", 
-                    SimpleLocationManager.LastLocation.Latitude,
-                    SimpleLocationManager.LastLocation.Longitude);
+                var locationDataString = string.Format(
+                                             "New location:\nLat={0}\nLng={1}", 
+                                             SimpleLocationManager.LastLocation.Latitude,
+                                             SimpleLocationManager.LastLocation.Longitude);
+                locationLabel.Text = locationDataString;
+                Console.WriteLine(locationDataString);
             };
             SimpleLocationManager.LocationUpdatesStopped += () => locationLabel.Text = stopped;
         }

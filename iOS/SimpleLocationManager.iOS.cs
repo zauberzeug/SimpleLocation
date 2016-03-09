@@ -23,12 +23,20 @@ namespace PerpetualEngine.Location
             InitLocationManager();
         }
 
+        public static bool RequestAlwaysAuthorization{ get; set; } = false;
+
+        public static bool PausesLocationUpdatesAutomatically { get; set; } = false;
+
         public void StartLocationUpdates(LocationAccuracy accuracy, double smallestDisplacementMeters,
                                          TimeSpan? interval = null, TimeSpan? fastestInterval = null)
         {
             shouldBeUpdatingLocation = true;
             locationManager.DesiredAccuracy = CLLocationAccuracy[accuracy];
             locationManager.DistanceFilter = smallestDisplacementMeters;
+            locationManager.PausesLocationUpdatesAutomatically = PausesLocationUpdatesAutomatically;
+
+            if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0) && RequestAlwaysAuthorization)
+                locationManager.AllowsBackgroundLocationUpdates = true;
 
             TryToStartUpdates();
         }
@@ -112,7 +120,10 @@ namespace PerpetualEngine.Location
 
         void TriggerAppPermissionDialog()
         {
-            locationManager.RequestWhenInUseAuthorization();
+            if (RequestAlwaysAuthorization)
+                locationManager.RequestAlwaysAuthorization();
+            else
+                locationManager.RequestWhenInUseAuthorization();
         }
     }
 }

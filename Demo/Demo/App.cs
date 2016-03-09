@@ -50,11 +50,6 @@ namespace Demo
             SimpleLocationManager.LocationUpdatesStopped += () => locationLabel.Text = stopped;
         }
 
-        protected override void OnSleep()
-        {
-            SimpleLocationManager.StopLocationUpdates();
-        }
-
         void InitViews()
         {
             helloLabel = new Label {

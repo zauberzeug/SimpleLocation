@@ -7,14 +7,14 @@ namespace Demo
     public class App : Application
     {
         public SimpleLocationManager SimpleLocationManager = new SimpleLocationManager();
+        public Button startButton;
+        public Button stopButton;
 
         const string hello = "Hello, SimpleLocation!";
         const string stopped = "Location updates stopped.";
 
         Label helloLabel;
         Label locationLabel;
-        Button startButton;
-        Button stopButton;
 
         public App()
         {
@@ -52,6 +52,17 @@ namespace Demo
             SimpleLocationManager.LocationUpdatesStopped += () => locationLabel.Text = stopped;
         }
 
+        public void StartLocationUpdates()
+        {
+            SimpleLocationManager.StartLocationUpdates(
+                LocationAccuracy.High, 1, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1));
+        }
+
+        public void StopLocationUpdates()
+        {
+            SimpleLocationManager.StopLocationUpdates();
+        }
+
         void InitViews()
         {
             helloLabel = new Label {
@@ -70,8 +81,6 @@ namespace Demo
                 BackgroundColor = Color.Green,
                 TextColor = Device.OnPlatform(Color.Black, Color.White, Color.White),
                 Text = "Start",
-                Command = new Command(o => SimpleLocationManager.StartLocationUpdates(
-                    LocationAccuracy.High, 1, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1))),
             };
 
             stopButton = new Button {
@@ -79,7 +88,6 @@ namespace Demo
                 BackgroundColor = Color.Red,
                 TextColor = Device.OnPlatform(Color.Black, Color.White, Color.White),
                 Text = "Stop",
-                Command = new Command(o => SimpleLocationManager.StopLocationUpdates()),
             };
         }
 

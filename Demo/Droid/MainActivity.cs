@@ -5,6 +5,7 @@ using Demo;
 using PerpetualEngine.Location;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
+using Android.Content;
 
 namespace Demo.Droid
 {
@@ -28,6 +29,14 @@ namespace Demo.Droid
             SimpleLocationManager.HideNeverButtonOnUseLocationDialog = true;
 
             app = new App();
+            BackgroundLocationService.App = app;
+
+            app.startButton.Clicked += delegate {
+                StartService(new Intent(this, typeof(BackgroundLocationService)));
+            };
+            app.stopButton.Clicked += delegate {
+                StopService(new Intent(this, typeof(BackgroundLocationService)));
+            };
 
             LoadApplication(app);
         }

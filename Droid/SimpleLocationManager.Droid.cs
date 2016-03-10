@@ -9,10 +9,10 @@ using Android.Content;
 
 namespace PerpetualEngine.Location
 {
-    public partial class SimpleLocationManager : Java.Lang.Object, 
-        IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, ILocationListener, IResultCallback
+    public partial class SimpleLocationManager : Java.Lang.Object, IGoogleApiClientConnectionCallbacks,
+        IGoogleApiClientOnConnectionFailedListener, ILocationListener, IResultCallback
     {
-        static Activity context;
+        static Context context;
         static bool showUseLocationDialog = true;
         IGoogleApiClient googleApiClient;
         bool resolvingError;
@@ -43,9 +43,9 @@ namespace PerpetualEngine.Location
 
         public static ShowUseLocationDialog HowOftenShowUseLocationDialog { get; set; } = ShowUseLocationDialog.Always;
 
-        public static void SetContext(Activity activity)
+        public static void SetContext(Context context)
         {
-            context = activity;
+            SimpleLocationManager.context = context;
         }
 
         public void StartLocationUpdates(LocationAccuracy accuracy, double smallestDisplacementMeters,
@@ -83,17 +83,22 @@ namespace PerpetualEngine.Location
         {
             if (resolvingError)
                 return; // Already attempting to resolve an error.
+           
+            if (!(context is Activity)) {
+                SimpleLocationLogger.Log("Connection failed. Error: " + result.ErrorCode);
+                return;
+            }
 
             if (result.HasResolution)
                 try {
                     resolvingError = true;
-                    result.StartResolutionForResult(context, requestResolveError);
+                    result.StartResolutionForResult(context as Activity, requestResolveError);
                 } catch (Exception e) {
                     SimpleLocationLogger.Log("Connection failed. Error: " + e.Message);
                     googleApiClient.Connect(); // There was an error with the resolution intent. Try again.
                 }
             else {
-                var dialog = GoogleApiAvailability.Instance.GetErrorDialog(context, result.ErrorCode, requestResolveError);
+                var dialog = GoogleApiAvailability.Instance.GetErrorDialog(context as Activity, result.ErrorCode, requestResolveError);
                 dialog.DismissEvent += (sender, e) => resolvingError = false;
                 dialog.Show();
 
@@ -149,7 +154,8 @@ namespace PerpetualEngine.Location
                 case CommonStatusCodes.ResolutionRequired:
                     SimpleLocationLogger.Log("Location settings are not satisfied");
                     try {
-                        status.StartResolutionForResult(context, requestCheckSettings);
+                        if (context is Activity)
+                            status.StartResolutionForResult(context as Activity, requestCheckSettings);
                         // Handle result in OnActivityResult of your Activity by calling HandleResolutionResultForLocationSettings
                     } catch (IntentSender.SendIntentException) {
                         SimpleLocationLogger.Log("PendingIntent unable to execute request");

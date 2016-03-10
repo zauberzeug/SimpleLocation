@@ -186,7 +186,12 @@ namespace PerpetualEngine.Location
             if (location != null)
                 LastLocation = new Location(location.Latitude, location.Longitude);
 
-            LocationServices.FusedLocationApi.RequestLocationUpdates(googleApiClient, CreateLocationRequest(), this);
+            try {
+                LocationServices.FusedLocationApi.RequestLocationUpdates(googleApiClient, CreateLocationRequest(), this);
+            } catch (Exception e) {
+                SimpleLocationLogger.Log("Requesting location updates failed. Message: " + e.Message);
+                SimpleLocationLogger.Log("Stack trace: " + System.Environment.StackTrace);
+            }
             LocationUpdatesStarted();
         }
 

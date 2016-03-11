@@ -39,7 +39,7 @@ namespace PerpetualEngine.Location
                 .Build();
         }
 
-        public static bool HideNeverButtonOnUseLocationDialog{ get; set; }
+        public static bool ShowNeverButtonOnUseLocationDialog{ get; set; } = false;
 
         public static ShowUseLocationDialog HowOftenShowUseLocationDialog { get; set; } = ShowUseLocationDialog.Always;
 
@@ -128,7 +128,7 @@ namespace PerpetualEngine.Location
         LocationSettingsRequest.Builder CreateLocationSettingsRequestBuilder()
         {
             var builder = new LocationSettingsRequest.Builder();
-            builder.SetAlwaysShow(HideNeverButtonOnUseLocationDialog);
+            builder.SetAlwaysShow(!ShowNeverButtonOnUseLocationDialog);
             builder.AddLocationRequest(CreateLocationRequest());
             return builder;
         }

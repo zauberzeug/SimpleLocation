@@ -8,6 +8,7 @@ Simple cross-platform location manager for *Xamarin* (*Android* and *iOS*)
 - different accuracy levels (high, balanced, low)
 - distance filter
 - automatic error handling for location settings
+- can be used in the background (f.e. in a `Service` on *Android*)
 
 ## Setup
 ### Android
@@ -15,17 +16,19 @@ Add permission `ACCESS_FINE_LOCATION` to your `AndroidManifest.xml`:
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-Set a context (must be an `Activity`) for your `SimpleLocationManager`, f.e. in `OnCreate()` of your `MainActivity`:
+Set a context for your `SimpleLocationManager`, f.e. in `OnCreate()` of your `MainActivity`:
 
     SimpleLocationManager.SetContext(this);
 
-In case the device's location settings are disabled, the user gets informed by a system dialog. If the user enables location settings this way and you want to automatically get location updates, you must call `HandleResolutionResultForLocationSettings` in your `Activity`'s `OnActivityResult` and pass the request code and result code.
+In case the device's location settings are disabled, the user gets informed by a system dialog (only available when your context is an `Activity`). If the user enables location settings this way and you want to automatically get location updates, you must call `HandleResolutionResultForLocationSettings` in your `Activity`'s `OnActivityResult` and pass the request code and result code.
 
     protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
     {
         simpleLocationManager.HandleResolutionResultForLocationSettings(requestCode, resultCode);
         ...  
     }
+
+**Using background location:** Works out of the box now. Your context no longer needs to be an `Activity`. You can use SimpleLocationManager in a `Service` now.
 
 ### iOS
 **Important:** Currently SimpleLocation only works on iOS 8 or higher.

@@ -1,20 +1,39 @@
-﻿namespace PerpetualEngine.Location
+﻿using System;
+
+namespace PerpetualEngine.Location
 {
     public class Location
     {
+        double latitude;
+        double longitude;
+        double direction;
+        double speed;
+
         public Location(double latitude, double longitude)
         {
             Latitude = latitude;
             Longitude = longitude;
         }
 
-        public double Latitude { get; set; }
+        public double Latitude { 
+            get{ return latitude; }
+            set{ latitude = Math.Round(value, 6); }
+        }
 
-        public double Longitude { get; set; }
+        public double Longitude { 
+            get{ return longitude; }
+            set{ longitude = Math.Round(value, 6); }
+        }
 
-        public double Direction { get; set; }
+        public double Direction { 
+            get{ return direction; }
+            set{ direction = Math.Round(value, 2); }
+        }
 
-        public double Speed { get; set; }
+        public double Speed { 
+            get{ return speed; }
+            set{ speed = Math.Round(value, 2); }
+        }
 
         public override string ToString()
         {

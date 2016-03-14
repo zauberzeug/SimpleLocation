@@ -6,19 +6,26 @@ namespace Demo
 {
     public class App : Application
     {
-        public SimpleLocationManager SimpleLocationManager = new SimpleLocationManager();
+        public SimpleLocationManager SimpleLocationManager;
         public Button startButton;
         public Button stopButton;
 
         const string hello = "Hello, SimpleLocation!";
-        const string stopped = "Location updates stopped.";
+        const string started = "Location updates started";
+        const string stopped = "Location updates stopped";
 
         Label helloLabel;
-        Label locationLabel;
+        Label infoLabel;
+        Label latitudeLabel;
+        Label longitudeLabel;
+        Label directionLabel;
+        Label speedLabel;
 
         public App()
         {
             InitViews();
+
+            InitSimpleLocationManager();
 
             MainPage = new ContentPage {
                 Content = new StackLayout {
@@ -26,11 +33,15 @@ namespace Demo
                     Spacing = 20,
                     Children = {
                         helloLabel,
-                        locationLabel,
+                        latitudeLabel,
+                        longitudeLabel,
+                        directionLabel,
+                        speedLabel,
+                        infoLabel,
                         new StackLayout {
                             Orientation = StackOrientation.Horizontal,
                             HorizontalOptions = LayoutOptions.Center,
-                            VerticalOptions = LayoutOptions.End,
+                            VerticalOptions = LayoutOptions.EndAndExpand,
                             Spacing = 20,
                             Children = {
                                 startButton,
@@ -41,15 +52,6 @@ namespace Demo
                 },
             };
 
-            SimpleLocationManager.LocationUpdated += delegate {
-                var locationDataString = string.Format(
-                                             "New location:\nLat={0}\nLng={1}", 
-                                             SimpleLocationManager.LastLocation.Latitude,
-                                             SimpleLocationManager.LastLocation.Longitude);
-                locationLabel.Text = locationDataString;
-                Console.WriteLine(locationDataString);
-            };
-            SimpleLocationManager.LocationUpdatesStopped += () => locationLabel.Text = stopped;
         }
 
         public void StartLocationUpdates()
@@ -63,32 +65,60 @@ namespace Demo
             SimpleLocationManager.StopLocationUpdates();
         }
 
+        void InitSimpleLocationManager()
+        {
+            SimpleLocationManager = new SimpleLocationManager();
+            SimpleLocationManager.LocationUpdatesStarted += () => infoLabel.Text = started;
+            SimpleLocationManager.LocationUpdatesStopped += () => infoLabel.Text = stopped;
+            SimpleLocationManager.LocationUpdated += delegate {
+                latitudeLabel.Text = string.Format("Latitude: {0}", SimpleLocationManager.LastLocation.Latitude);
+                longitudeLabel.Text = string.Format("Longitude: {0}", SimpleLocationManager.LastLocation.Longitude);
+                directionLabel.Text = string.Format("Direction: {0} deg", SimpleLocationManager.LastLocation.Direction);
+                speedLabel.Text = string.Format("Speed: {0} m/s", SimpleLocationManager.LastLocation.Speed);
+
+                Console.WriteLine(SimpleLocationManager.LastLocation);
+            };
+        }
+
         void InitViews()
         {
             helloLabel = new Label {
-                VerticalOptions = LayoutOptions.Start,
-                XAlign = TextAlignment.Center,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.StartAndExpand,
                 Text = hello,
             };
 
-            locationLabel = new Label {
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                XAlign = TextAlignment.Center,
+            latitudeLabel = new Label();
+
+            longitudeLabel = new Label();
+
+            directionLabel = new Label();
+
+            speedLabel = new Label();
+
+            infoLabel = new Label {
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.EndAndExpand,
             };
 
             startButton = new Button {
                 WidthRequest = 100,
                 BackgroundColor = Color.Green,
-                TextColor = Device.OnPlatform(Color.Black, Color.White, Color.White),
+                TextColor = GetButtonTextColor(),
                 Text = "Start",
             };
 
             stopButton = new Button {
                 WidthRequest = 100,
                 BackgroundColor = Color.Red,
-                TextColor = Device.OnPlatform(Color.Black, Color.White, Color.White),
+                TextColor = GetButtonTextColor(),
                 Text = "Stop",
             };
+        }
+
+        Color GetButtonTextColor()
+        {
+            return Device.OnPlatform(Color.Black, Color.White, Color.White);
         }
 
     }

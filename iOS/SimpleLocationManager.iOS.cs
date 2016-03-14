@@ -72,6 +72,8 @@ namespace PerpetualEngine.Location
                 locationManager.LocationsUpdated += (sender, e) => {
                     var location = e.Locations.Last();
                     LastLocation = new Location(location.Coordinate.Latitude, location.Coordinate.Longitude);
+                    LastLocation.Direction = location.Course >= 0 ? location.Course : 0;
+                    LastLocation.Speed = location.Speed >= 0 ? location.Speed : 0;
                     LocationUpdated();
                 };
 

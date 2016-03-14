@@ -112,6 +112,8 @@ namespace PerpetualEngine.Location
                 return;
             
             LastLocation = new Location(location.Latitude, location.Longitude);
+            LastLocation.Direction = location.Bearing;
+            LastLocation.Speed = location.Speed;
             LocationUpdated();
         }
 

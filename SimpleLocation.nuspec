@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>SimpleLocation</id>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <authors>Perpetual Mobile GmbH</authors>
         <owners>Perpetual Mobile GmbH</owners>
 		    <projectUrl>https://github.com/perpetual-mobile/SimpleLocation</projectUrl>
@@ -10,13 +10,10 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Simple platform independent location manager for iOS and Android (Xamarin)</description>
         <releaseNotes>
-            Version 0.2.0
-              - [Android] Changed type of context from Activity to Context to enable background usage (f.e. in a Service)
-              - [Android] Changed bool flag HideNeverButtonOnUseLocationDialog to ShowNeverButtonOnUseLocationDialog (default = false)
-              - [iOS] Enabled background usage
-              - [iOS] Prevent location updates on AuthorizationChanged after location updates have been stopped
-              - [DemoApp] DemoApp now uses background location (location updates no longer stop when entering background)
-              - Updated documentation
+            Version 0.2.1
+              - Added direction and speed to Location class
+              - Latitude and Longitude now get rounded to 6 decimals
+              - Updated DemoApp
         </releaseNotes>
         <copyright>Copyright 2015</copyright>
         <tags>location geolocation latitude longitude cross-platform ios android xamarin</tags>

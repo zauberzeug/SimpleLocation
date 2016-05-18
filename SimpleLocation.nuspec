@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>SimpleLocation</id>
-        <version>0.2.2</version>
+        <version>0.2.3</version>
         <authors>Perpetual Mobile GmbH</authors>
         <owners>Perpetual Mobile GmbH</owners>
 		    <projectUrl>https://github.com/perpetual-mobile/SimpleLocation</projectUrl>
@@ -10,8 +10,10 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Simple platform independent location manager for iOS and Android (Xamarin)</description>
         <releaseNotes>
+          Version 0.2.3
+              - Upgraded to GooglePlayServices 29.0.0.2
           Version 0.2.2
-              - Upgraded to GooglePlayServices 29
+              - Upgraded to GooglePlayServices 29.0.0.1
           Version 0.2.1
               - Added direction and speed to Location class
               - Latitude and Longitude now get rounded to 6 decimals

@@ -10,7 +10,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Simple platform independent location manager for iOS and Android (Xamarin)</description>
         <releaseNotes>
-          Version 0.2.1
+          Version 0.2.2
               - Upgraded to GooglePlayServices 29
           Version 0.2.1
               - Added direction and speed to Location class

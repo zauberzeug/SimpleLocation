@@ -23,6 +23,8 @@ namespace PerpetualEngine.Location
             InitLocationManager();
         }
 
+        public event Action<object, CLAuthorizationChangedEventArgs> AuthorizationChanged = delegate{};
+
         public static bool RequestAlwaysAuthorization{ get; set; } = false;
 
         public static bool PausesLocationUpdatesAutomatically { get; set; } = false;
@@ -53,6 +55,7 @@ namespace PerpetualEngine.Location
             if (locationManager == null) {
                 locationManager = new CLLocationManager();
                 locationManager.AuthorizationChanged += (sender, e) => {
+                    AuthorizationChanged(sender, e);
                     if (isInitializing) { // Necessary because AuthorizationChanged get's called even on App start
                         isInitializing = false;
                         return;

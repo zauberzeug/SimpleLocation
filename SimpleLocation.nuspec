@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>SimpleLocation</id>
-        <version>0.2.3</version>
+        <version>0.2.4</version>
         <authors>Perpetual Mobile GmbH</authors>
         <owners>Perpetual Mobile GmbH</owners>
 		    <projectUrl>https://github.com/perpetual-mobile/SimpleLocation</projectUrl>
@@ -10,6 +10,8 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Simple platform independent location manager for iOS and Android (Xamarin)</description>
         <releaseNotes>
+          Version 0.2.4
+              - Enabled access to AuthorizationChanged event (iOS)
           Version 0.2.3
               - Upgraded to GooglePlayServices 29.0.0.2
           Version 0.2.2
@@ -33,7 +35,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="Droid/bin/Release/SimpleLocation.Droid.dll" target="lib\MonoAndroid" />
-        <file src="iOS/bin/Release/SimpleLocation.iOS.dll" target="lib\Xamarin.iOS10" />
+        <file src="Droid/bin/Release/SimpleLocation.Droid.dll" target="lib/MonoAndroid" />
+        <file src="iOS/bin/Release/SimpleLocation.iOS.dll" target="lib/Xamarin.iOS10" />
     </files>
 </package>

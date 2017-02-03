@@ -15,4 +15,4 @@ path=`dirname $0`
 
 rm $path/*.nupkg
 nuget pack $path/*.nuspec -OutputDirectory $path || exit 1
-nuget push $path/*.nupkg
+nuget push $path/*.nupkg -Source https://www.nuget.org/api/v2/package

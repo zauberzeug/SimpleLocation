@@ -28,6 +28,7 @@ In case the device's location settings are disabled, the user gets informed by a
         ...  
     }
 
+You can configure the system dialog behavior with `HowOftenShowUseLocationDialog` and `ShowNeverButtonOnUseLocationDialog`. 
 **Using background location:** Works out of the box now. Your context no longer needs to be an `Activity`. You can use SimpleLocationManager in a `Service` now.
 
 ### iOS

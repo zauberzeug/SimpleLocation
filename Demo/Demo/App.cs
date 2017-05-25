@@ -57,7 +57,7 @@ namespace Demo
         public void StartLocationUpdates()
         {
             SimpleLocationManager.StartLocationUpdates(
-                LocationAccuracy.High, 1, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1));
+                LocationAccuracy.High, 0, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1));
         }
 
         public void StopLocationUpdates()

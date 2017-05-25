@@ -74,7 +74,7 @@ To start location updates call
 
     simpleLocationManager.StartLocationUpdates(LocationAccuracy.Balanced, 5, TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(30));
 
-The `TimeSpan` parameters will be taken into consideration **only** on *Android* (see [here](https://developers.google.com/android/reference/com/google/android/gms/location/LocationRequest#setInterval(long)) for `interval` and [here](https://developers.google.com/android/reference/com/google/android/gms/location/LocationRequest#setFastestInterval(long)) for `fastestInterval`). On *iOS* just call
+The `TimeSpan` parameters will be taken into consideration **only** on *Android* (see [here](https://developers.google.com/android/reference/com/google/android/gms/location/LocationRequest#setInterval(long)) for `interval` and [here](https://developers.google.com/android/reference/com/google/android/gms/location/LocationRequest#setFastestInterval(long)) for `fastestInterval`). Default values are 1 hour for `interval` and 10 minutes for `fastestInterval`. On *iOS* just call
 
     simpleLocationManager.StartLocationUpdates(LocationAccuracy.Balanced, 5);
 

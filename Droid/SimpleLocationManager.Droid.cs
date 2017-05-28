@@ -52,7 +52,7 @@ namespace PerpetualEngine.Location
                                          TimeSpan? interval = null, TimeSpan? fastestInterval = null)
         {
             this.smallestDisplacementMeters = smallestDisplacementMeters;
-            this.accuracy = LocationRequestAccuracy [accuracy];
+            this.accuracy = LocationRequestAccuracy[accuracy];
             this.interval = (long)(interval ?? TimeSpan.FromHours(1)).TotalMilliseconds;
             this.fastestInterval = (long)(fastestInterval ?? TimeSpan.FromMinutes(10)).TotalMilliseconds;
 
@@ -149,42 +149,42 @@ namespace PerpetualEngine.Location
 
             var status = locationSettingsResult.Status;
             switch (status.StatusCode) {
-            case CommonStatusCodes.Success:
-                SimpleLocationLogger.Log("All location settings are satisfied");
-                StartUpdates();
-                break;
-            case CommonStatusCodes.ResolutionRequired:
-                SimpleLocationLogger.Log("Location settings are not satisfied");
-                try {
-                    if (context is Activity)
-                        status.StartResolutionForResult(context as Activity, requestCheckSettings);
-                    // Handle result in OnActivityResult of your Activity by calling HandleResolutionResultForLocationSettings
-                } catch (IntentSender.SendIntentException) {
-                    SimpleLocationLogger.Log("PendingIntent unable to execute request");
-                }
-                break;
-            case LocationSettingsStatusCodes.SettingsChangeUnavailable:
-                SimpleLocationLogger.Log("Location settings are inadequate and cannot be fixed here");
-                break;
+                case CommonStatusCodes.Success:
+                    SimpleLocationLogger.Log("All location settings are satisfied");
+                    StartUpdates();
+                    break;
+                case CommonStatusCodes.ResolutionRequired:
+                    SimpleLocationLogger.Log("Location settings are not satisfied");
+                    try {
+                        if (context is Activity)
+                            status.StartResolutionForResult(context as Activity, requestCheckSettings);
+                        // Handle result in OnActivityResult of your Activity by calling HandleResolutionResultForLocationSettings
+                    } catch (IntentSender.SendIntentException) {
+                        SimpleLocationLogger.Log("PendingIntent unable to execute request");
+                    }
+                    break;
+                case LocationSettingsStatusCodes.SettingsChangeUnavailable:
+                    SimpleLocationLogger.Log("Location settings are inadequate and cannot be fixed here");
+                    break;
             }
         }
 
         public void HandleResolutionResultForLocationSettings(int requestCode, Result resultCode)
         {
             switch (requestCode) {
-            case requestCheckSettings:
-                switch (resultCode) {
-                case Result.Ok:
-                    SimpleLocationLogger.Log("User agreed to make required location settings changes");
-                    StartUpdates();
+                case requestCheckSettings:
+                    switch (resultCode) {
+                        case Result.Ok:
+                            SimpleLocationLogger.Log("User agreed to make required location settings changes");
+                            StartUpdates();
+                            break;
+                        case Result.Canceled:
+                            SimpleLocationLogger.Log("User chose not to make required location settings changes");
+                            if (HowOftenShowUseLocationDialog == ShowUseLocationDialog.Once)
+                                showUseLocationDialog = false;
+                            break;
+                    }
                     break;
-                case Result.Canceled:
-                    SimpleLocationLogger.Log("User chose not to make required location settings changes");
-                    if (HowOftenShowUseLocationDialog == ShowUseLocationDialog.Once)
-                        showUseLocationDialog = false;
-                    break;
-                }
-                break;
             }
         }
 

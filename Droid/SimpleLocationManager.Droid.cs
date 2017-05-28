@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using Android;
 using Android.App;
+using Android.Content;
+using Android.Content.PM;
 using Android.Gms.Common;
 using Android.Gms.Common.Apis;
 using Android.Gms.Location;
 using Android.OS;
-using Android.Content;
+using Android.Support.V4.App;
+using Android.Support.V4.Content;
 
 namespace PerpetualEngine.Location
 {
@@ -18,7 +22,8 @@ namespace PerpetualEngine.Location
         bool resolvingError;
         const int requestResolveError = 1001;
         const int requestCheckSettings = 2002;
-
+        const int locationPermissionId = 3003;
+        const string locationPermission = Manifest.Permission.AccessFineLocation;
         double smallestDisplacementMeters;
         int accuracy;
         long interval;
@@ -39,6 +44,8 @@ namespace PerpetualEngine.Location
                 .Build();
         }
 
+        public static bool HandlePermissions { get; set; } = false;
+
         public static bool ShowNeverButtonOnUseLocationDialog{ get; set; } = false;
 
         public static ShowUseLocationDialog HowOftenShowUseLocationDialog { get; set; } = ShowUseLocationDialog.Always;
@@ -55,6 +62,13 @@ namespace PerpetualEngine.Location
             this.accuracy = LocationRequestAccuracy[accuracy];
             this.interval = (long)(interval ?? TimeSpan.FromHours(1)).TotalMilliseconds;
             this.fastestInterval = (long)(fastestInterval ?? TimeSpan.FromMinutes(10)).TotalMilliseconds;
+
+            if (HandlePermissions && context != null && context is Activity) {
+                if (ContextCompat.CheckSelfPermission(context, locationPermission) != (int)Permission.Granted) {
+                    ActivityCompat.RequestPermissions(context as Activity, new []{ locationPermission }, locationPermissionId);
+                    return;
+                }
+            }
 
             googleApiClient.Connect();
         }
@@ -185,6 +199,18 @@ namespace PerpetualEngine.Location
                             break;
                     }
                     break;
+            }
+        }
+
+        public void HandleResultForLocationPermissionRequest(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            switch (requestCode) {
+                case locationPermissionId:
+                    {
+                        if (grantResults.Length > 0 && grantResults[0] == Permission.Granted)
+                            googleApiClient.Connect();
+                        break;
+                    }
             }
         }
 

@@ -26,6 +26,7 @@ namespace Demo.Droid
 
             SimpleLocationManager.SetContext(this);
             SimpleLocationManager.HowOftenShowUseLocationDialog = SimpleLocationManager.ShowUseLocationDialog.Once;
+            SimpleLocationManager.HandlePermissions = true;
 
             app = new App();
             BackgroundLocationService.App = app;
@@ -45,6 +46,13 @@ namespace Demo.Droid
             app.SimpleLocationManager.HandleResolutionResultForLocationSettings(requestCode, resultCode);
 
             base.OnActivityResult(requestCode, resultCode, data);
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            app.SimpleLocationManager.HandleResultForLocationPermissionRequest(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }

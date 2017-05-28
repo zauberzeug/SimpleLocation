@@ -2,6 +2,7 @@
 {
     public enum LocationAccuracy
     {
+        Navigation,
         High,
         Balanced,
         Low,

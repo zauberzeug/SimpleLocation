@@ -13,6 +13,7 @@ namespace PerpetualEngine.Location
         bool shouldBeUpdatingLocation;
 
         Dictionary<LocationAccuracy, double> CLLocationAccuracy = new Dictionary<LocationAccuracy, double> {
+            { LocationAccuracy.Navigation, CLLocation.AccurracyBestForNavigation },
             { LocationAccuracy.High, CLLocation.AccuracyBest },
             { LocationAccuracy.Balanced, CLLocation.AccuracyHundredMeters },
             { LocationAccuracy.Low, CLLocation.AccuracyKilometer },

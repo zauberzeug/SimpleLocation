@@ -30,6 +30,7 @@ namespace PerpetualEngine.Location
         long fastestInterval;
 
         Dictionary<LocationAccuracy, int> LocationRequestAccuracy = new Dictionary<LocationAccuracy, int> {
+            { LocationAccuracy.Navigation, LocationRequest.PriorityHighAccuracy },
             { LocationAccuracy.High, LocationRequest.PriorityHighAccuracy },
             { LocationAccuracy.Balanced, LocationRequest.PriorityBalancedPowerAccuracy },
             { LocationAccuracy.Low, LocationRequest.PriorityLowPower },

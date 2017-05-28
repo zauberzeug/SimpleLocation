@@ -1,11 +1,11 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Demo;
 using PerpetualEngine.Location;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
-using Android.Content;
 
 namespace Demo.Droid
 {
@@ -41,7 +41,7 @@ namespace Demo.Droid
             LoadApplication(app);
         }
 
-        protected override void OnActivityResult(int requestCode, Result resultCode, Android.Content.Intent data)
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             app.SimpleLocationManager.HandleResolutionResultForLocationSettings(requestCode, resultCode);
 

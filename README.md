@@ -31,6 +31,10 @@ In case the device's location settings are disabled, the user gets informed by a
 You can configure the system dialog behavior with `HowOftenShowUseLocationDialog` and `ShowNeverButtonOnUseLocationDialog`. 
 **Using background location:** Works out of the box now. Your context no longer needs to be an `Activity`. You can use SimpleLocationManager in a `Service` now.
 
+**Handling permissions for API 23+:** Since API level 23 it is necessary to request permission for accessing location. SimpleLocation can handle this for you. All you need to do is
+- pass an `Activity` to `SimpleLocationManager.SetContext(this);`
+- set `SimpleLocationManager.HandlePermissions = true;` where you configure `SimpleLocationManager`
+
 ### iOS
 **Important:** Currently SimpleLocation only works on iOS 8 or higher.
 

@@ -34,6 +34,14 @@ You can configure the system dialog behavior with `HowOftenShowUseLocationDialog
 **Handling permissions for API 23+:** Since API level 23 it is necessary to request permission for accessing location. SimpleLocation can handle this for you. All you need to do is
 - pass an `Activity` to `SimpleLocationManager.SetContext(this);`
 - set `SimpleLocationManager.HandlePermissions = true;` where you configure `SimpleLocationManager`
+- call `HandleResultForLocationPermissionRequest` in your `Activity`s `OnRequestPermissionsResult` and pass the request code, permissions, and granted results
+
+<!-- necessary for correct formatting of next code block -->
+    public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+    {
+        simpleLocationManager.HandleResultForLocationPermissionRequest(requestCode, permissions, grantResults);
+        ...
+    }
 
 ### iOS
 **Important:** Currently SimpleLocation only works on iOS 8 or higher.

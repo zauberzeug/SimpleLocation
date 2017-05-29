@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>SimpleLocation</id>
-        <version>0.3.0</version>
+        <version>0.3.1</version>
         <authors>Perpetual Mobile GmbH</authors>
         <owners>Perpetual Mobile GmbH</owners>
 		    <projectUrl>https://github.com/perpetual-mobile/SimpleLocation</projectUrl>
@@ -10,6 +10,8 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Simple platform independent location manager for iOS and Android (Xamarin)</description>
         <releaseNotes>
+          Version 0.3.1
+              - Fixed deadlock when not using request permission rationale
           Version 0.3.0
               - Added permission handling for API 23+ (Android)
               - Added new Location Accuracy 'Navigation' (only takes effect on iOS)

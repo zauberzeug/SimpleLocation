@@ -51,6 +51,9 @@ namespace PerpetualEngine.Location
 
         public static ShowUseLocationDialog HowOftenShowUseLocationDialog { get; set; } = ShowUseLocationDialog.Always;
 
+        public Action ShowRequestPermissionRationale = delegate {
+        };
+
         public static void SetContext(Context context)
         {
             SimpleLocationManager.context = context;
@@ -66,8 +69,13 @@ namespace PerpetualEngine.Location
 
             if (HandlePermissions && context != null && context is Activity) {
                 if (ContextCompat.CheckSelfPermission(context, locationPermission) != (int)Permission.Granted) {
-                    ActivityCompat.RequestPermissions(context as Activity, new []{ locationPermission }, locationPermissionId);
-                    return;
+                    if (ActivityCompat.ShouldShowRequestPermissionRationale(context as Activity, locationPermission)) {
+                        ShowRequestPermissionRationale();
+                        return;
+                    } else {
+                        RequestPermission();
+                        return;
+                    }
                 }
             }
 
@@ -82,6 +90,11 @@ namespace PerpetualEngine.Location
             LocationServices.FusedLocationApi.RemoveLocationUpdates(googleApiClient, this);
             googleApiClient.Disconnect();
             LocationUpdatesStopped();
+        }
+
+        public void RequestPermission()
+        {
+            ActivityCompat.RequestPermissions(context as Activity, new []{ locationPermission }, locationPermissionId);
         }
 
         public void OnConnected(Bundle connectionHint)

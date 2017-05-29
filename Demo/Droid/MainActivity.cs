@@ -37,6 +37,9 @@ namespace Demo.Droid
             app.stopButton.Clicked += delegate {
                 StopService(new Intent(this, typeof(BackgroundLocationService)));
             };
+            app.SimpleLocationManager.ShowRequestPermissionRationale += delegate {
+                ShowRequestPermissionRationale();
+            };
 
             LoadApplication(app);
         }
@@ -53,6 +56,17 @@ namespace Demo.Droid
             app.SimpleLocationManager.HandleResultForLocationPermissionRequest(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        private void ShowRequestPermissionRationale()
+        {
+            var alert = new AlertDialog.Builder(this);
+            alert.SetTitle("Permission explanation");
+            alert.SetMessage("Location permission is necessary to get location information");
+            alert.SetPositiveButton("OK", delegate {
+                app.SimpleLocationManager.RequestPermission();
+            });
+            alert.Create().Show();
         }
     }
 }

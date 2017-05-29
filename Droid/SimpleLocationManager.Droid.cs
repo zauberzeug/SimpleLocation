@@ -45,7 +45,7 @@ namespace PerpetualEngine.Location
                 .Build();
         }
 
-        public static bool HandlePermissions { get; set; } = false;
+        public static bool HandleLocationPermission { get; set; } = false;
 
         public static bool ShowNeverButtonOnUseLocationDialog{ get; set; } = false;
 
@@ -67,7 +67,7 @@ namespace PerpetualEngine.Location
             this.interval = (long)(interval ?? TimeSpan.FromHours(1)).TotalMilliseconds;
             this.fastestInterval = (long)(fastestInterval ?? TimeSpan.FromMinutes(10)).TotalMilliseconds;
 
-            if (HandlePermissions && context != null && context is Activity) {
+            if (HandleLocationPermission && context != null && context is Activity) {
                 if (ContextCompat.CheckSelfPermission(context, locationPermission) != (int)Permission.Granted) {
                     if (ActivityCompat.ShouldShowRequestPermissionRationale(context as Activity, locationPermission)) {
                         ShowRequestPermissionRationale();

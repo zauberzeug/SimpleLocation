@@ -26,7 +26,7 @@ namespace Demo.Droid
 
             SimpleLocationManager.SetContext(this);
             SimpleLocationManager.HowOftenShowUseLocationDialog = SimpleLocationManager.ShowUseLocationDialog.Once;
-            SimpleLocationManager.HandlePermissions = true;
+            SimpleLocationManager.HandleLocationPermission = true;
 
             app = new App();
             BackgroundLocationService.App = app;

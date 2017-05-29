@@ -44,18 +44,18 @@ namespace Demo.Droid
             LoadApplication(app);
         }
 
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
-        {
-            app.SimpleLocationManager.HandleResolutionResultForLocationSettings(requestCode, resultCode);
-
-            base.OnActivityResult(requestCode, resultCode, data);
-        }
-
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             app.SimpleLocationManager.HandleResultForLocationPermissionRequest(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            app.SimpleLocationManager.HandleResolutionResultForLocationSettings(requestCode, resultCode);
+
+            base.OnActivityResult(requestCode, resultCode, data);
         }
 
         private void ShowRequestPermissionRationale()

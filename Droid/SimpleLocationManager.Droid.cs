@@ -16,14 +16,15 @@ namespace PerpetualEngine.Location
     public partial class SimpleLocationManager : Java.Lang.Object, GoogleApiClient.IConnectionCallbacks,
         ILocationListener, IResultCallback
     {
-        static Context context;
-        static bool showUseLocationDialog = true;
-        GoogleApiClient googleApiClient;
-        bool resolvingError;
         const int requestResolveError = 1001;
         const int requestCheckSettings = 2002;
         const int locationPermissionId = 3003;
         const string locationPermission = Manifest.Permission.AccessFineLocation;
+
+        static Context context;
+        static bool showUseLocationDialog = true;
+        GoogleApiClient googleApiClient;
+        bool resolvingError;
         double smallestDisplacementMeters;
         int accuracy;
         long interval;
@@ -45,14 +46,20 @@ namespace PerpetualEngine.Location
                 .Build();
         }
 
+        public Action ShowRequestPermissionRationale = delegate {
+        };
+
+        public enum ShowUseLocationDialog
+        {
+            Always,
+            Once,
+        }
+
         public static bool HandleLocationPermission { get; set; } = false;
 
         public static bool ShowNeverButtonOnUseLocationDialog{ get; set; } = false;
 
         public static ShowUseLocationDialog HowOftenShowUseLocationDialog { get; set; } = ShowUseLocationDialog.Always;
-
-        public Action ShowRequestPermissionRationale = delegate {
-        };
 
         public static void SetContext(Context context)
         {
@@ -145,32 +152,6 @@ namespace PerpetualEngine.Location
             LocationUpdated();
         }
 
-        LocationRequest CreateLocationRequest()
-        {
-            var locationRequest = new LocationRequest();
-            locationRequest.SetSmallestDisplacement((float)smallestDisplacementMeters);
-            locationRequest.SetPriority(accuracy);
-            locationRequest.SetInterval(interval);
-            locationRequest.SetFastestInterval(fastestInterval);
-            return locationRequest;
-        }
-
-        LocationSettingsRequest.Builder CreateLocationSettingsRequestBuilder()
-        {
-            var builder = new LocationSettingsRequest.Builder();
-            builder.SetAlwaysShow(!ShowNeverButtonOnUseLocationDialog);
-            builder.AddLocationRequest(CreateLocationRequest());
-            return builder;
-        }
-
-        void CheckLocationServicesEnabled()
-        {
-            if (showUseLocationDialog) {
-                var result = LocationServices.SettingsApi.CheckLocationSettings(googleApiClient, CreateLocationSettingsRequestBuilder().Build());
-                result.SetResultCallback(this);
-            }
-        }
-
         public void OnResult(Java.Lang.Object result)
         {
             var locationSettingsResult = result as LocationSettingsResult;
@@ -228,6 +209,32 @@ namespace PerpetualEngine.Location
             }
         }
 
+        LocationRequest CreateLocationRequest()
+        {
+            var locationRequest = new LocationRequest();
+            locationRequest.SetSmallestDisplacement((float)smallestDisplacementMeters);
+            locationRequest.SetPriority(accuracy);
+            locationRequest.SetInterval(interval);
+            locationRequest.SetFastestInterval(fastestInterval);
+            return locationRequest;
+        }
+
+        LocationSettingsRequest.Builder CreateLocationSettingsRequestBuilder()
+        {
+            var builder = new LocationSettingsRequest.Builder();
+            builder.SetAlwaysShow(!ShowNeverButtonOnUseLocationDialog);
+            builder.AddLocationRequest(CreateLocationRequest());
+            return builder;
+        }
+
+        void CheckLocationServicesEnabled()
+        {
+            if (showUseLocationDialog) {
+                var result = LocationServices.SettingsApi.CheckLocationSettings(googleApiClient, CreateLocationSettingsRequestBuilder().Build());
+                result.SetResultCallback(this);
+            }
+        }
+
         void StartUpdates()
         {
             var location = LocationServices.FusedLocationApi.GetLastLocation(googleApiClient);
@@ -241,12 +248,6 @@ namespace PerpetualEngine.Location
                 SimpleLocationLogger.Log("Stack trace: " + System.Environment.StackTrace);
             }
             LocationUpdatesStarted();
-        }
-
-        public enum ShowUseLocationDialog
-        {
-            Always,
-            Once,
         }
     }
 }

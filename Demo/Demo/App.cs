@@ -6,13 +6,13 @@ namespace Demo
 {
     public class App : Application
     {
-        public SimpleLocationManager SimpleLocationManager;
-        public Button startButton;
-        public Button stopButton;
-
         const string hello = "Hello, SimpleLocation!";
         const string started = "Location updates started";
         const string stopped = "Location updates stopped";
+        
+        public SimpleLocationManager SimpleLocationManager;
+        public Button startButton;
+        public Button stopButton;
 
         Label helloLabel;
         Label infoLabel;

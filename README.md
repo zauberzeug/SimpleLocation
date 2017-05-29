@@ -34,8 +34,8 @@ You can configure the system dialog behavior with `HowOftenShowUseLocationDialog
 **Using background location:** Works out of the box now. Your context no longer needs to be an `Activity`. You can use SimpleLocationManager in a `Service` now.
 
 **Handling permissions for API 23+:** Since API level 23 it is necessary to request permission for accessing location. SimpleLocation can handle this for you. All you need to do is
-- pass an `Activity` to `SimpleLocationManager.SetContext(this);`
-- set `SimpleLocationManager.HandleLocationPermission = true;` where you configure `SimpleLocationManager`
+- pass an `Activity` to `SimpleLocationManager.SetContext(this)`
+- set `SimpleLocationManager.HandleLocationPermission = true` where you configure `SimpleLocationManager`
 - call `HandleResultForLocationPermissionRequest` in your `Activity`s `OnRequestPermissionsResult` and pass the request code, permissions, and granted results
 
 <!-- necessary for correct formatting of next code block -->
@@ -45,7 +45,7 @@ You can configure the system dialog behavior with `HowOftenShowUseLocationDialog
         ...
     }
 
-In case you want to show a request permission rationale, you can use the `ShowRequestPermissionRationale` delegate. Don’t forget to call `RequestPermission` on your `SimpleLocationManager` instance again when closing your rationale (see demo app).
+In case you want to show a request permission rationale, you can use the `ShowRequestPermissionRationale` delegate. Set `SimpleLocationManager.ShouldShowRequestPermissionRationale = true` where you configure `SimpleLocationManager`. Don’t forget to call `RequestPermission` on your `SimpleLocationManager` instance again when closing your rationale (see demo app).
 
 ### iOS
 **Important:** Currently SimpleLocation only works on iOS 8 or higher.

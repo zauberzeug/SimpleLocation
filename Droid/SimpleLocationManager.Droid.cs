@@ -57,6 +57,8 @@ namespace PerpetualEngine.Location
 
         public static bool HandleLocationPermission { get; set; } = false;
 
+        public static bool ShouldShowRequestPermissionRationale { get; set; } = false;
+
         public static bool ShowNeverButtonOnUseLocationDialog{ get; set; } = false;
 
         public static ShowUseLocationDialog HowOftenShowUseLocationDialog { get; set; } = ShowUseLocationDialog.Always;
@@ -76,7 +78,7 @@ namespace PerpetualEngine.Location
 
             if (HandleLocationPermission && context != null && context is Activity) {
                 if (ContextCompat.CheckSelfPermission(context, locationPermission) != (int)Permission.Granted) {
-                    if (ActivityCompat.ShouldShowRequestPermissionRationale(context as Activity, locationPermission)) {
+                    if (ShouldShowRequestPermissionRationale && ActivityCompat.ShouldShowRequestPermissionRationale(context as Activity, locationPermission)) {
                         ShowRequestPermissionRationale();
                         return;
                     } else {

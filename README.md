@@ -5,10 +5,11 @@ Simple cross-platform location manager for *Xamarin* (*Android* and *iOS*)
 - latest native location APIs accessible from shared code
 - get last location
 - receive location updates
-- different accuracy levels (high, balanced, low)
+- different accuracy levels (navigation, high, balanced, low)
 - distance filter
 - automatic error handling for location settings
 - can be used in the background (f.e. in a `Service` on *Android*)
+- permission handling for Android API 23+
 
 ## Setup
 ### Android

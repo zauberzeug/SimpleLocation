@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>SimpleLocation</id>
-        <version>0.3.1</version>
+        <version>0.3.2</version>
         <authors>Perpetual Mobile GmbH</authors>
         <owners>Perpetual Mobile GmbH</owners>
 		    <projectUrl>https://github.com/perpetual-mobile/SimpleLocation</projectUrl>
@@ -10,13 +10,17 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Simple platform independent location manager for iOS and Android (Xamarin)</description>
         <releaseNotes>
+          Version 0.3.2
+              - Added callbacks for location permission granted/denied (Android only)
+              - Set Android target framework and target sdk to API 28 (Android 9)
+              - Updated dependencies to latest version
           Version 0.3.1
               - Fixed deadlock when not using request permission rationale
           Version 0.3.0
               - Added permission handling for API 23+ (Android)
               - Added new Location Accuracy 'Navigation' (only takes effect on iOS)
               - Demo-App now uses smallestDisplacementMeters = 0 for getting more frequent location updates
-              - Updated documentation  
+              - Updated documentation
           Version 0.2.4
               - Enabled access to AuthorizationChanged event (iOS)
           Version 0.2.3
@@ -32,12 +36,12 @@
         <tags>location geolocation latitude longitude cross-platform ios android xamarin</tags>
         <dependencies>
             <group targetFramework="MonoAndroid">
-                <dependency id="Xamarin.Android.Support.v4" version="23.3.0" />
-                <dependency id="Xamarin.Android.Support.v7.AppCompat" version="23.3.0" />
-                <dependency id="Xamarin.Android.Support.v7.MediaRouter" version="23.3.0" />
-                <dependency id="Xamarin.GooglePlayServices.Base" version="29.0.0.2" />
-                <dependency id="Xamarin.GooglePlayServices.Maps" version="29.0.0.2" />
-                <dependency id="Xamarin.GooglePlayServices.Location" version="29.0.0.2" />
+                <dependency id="Xamarin.Android.Support.v4" version="27.0.2.1" />
+                <dependency id="Xamarin.Android.Support.v7.AppCompat" version="27.0.2.1" />
+                <dependency id="Xamarin.Android.Support.v7.MediaRouter" version="27.0.2.1" />
+                <dependency id="Xamarin.GooglePlayServices.Base" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Location" version="60.1142.1" />
+                <dependency id="Xamarin.GooglePlayServices.Maps" version="60.1142.1" />
             </group>
         </dependencies>
     </metadata>

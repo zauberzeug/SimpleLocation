@@ -46,7 +46,16 @@ namespace PerpetualEngine.Location
                 .Build();
         }
 
-        public Action ShowRequestPermissionRationale = delegate {
+        public event Action PermissionDenied = delegate
+        {
+        };
+
+        public event Action PermissionGranted = delegate
+        {
+        };
+
+        public Action ShowRequestPermissionRationale = delegate
+        {
         };
 
         public enum ShowUseLocationDialog
@@ -222,7 +231,15 @@ namespace PerpetualEngine.Location
                 case locationPermissionId:
                     {
                         if (grantResults.Length > 0 && grantResults[0] == Permission.Granted)
+                        {
                             googleApiClient.Connect();
+                            PermissionGranted();
+                        }
+                        else if (grantResults.Length > 0 && grantResults[0] == Permission.Denied)
+                        {
+                            PermissionDenied();
+                        }
+
                         break;
                     }
             }

@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>SimpleLocation</id>
-        <version>0.3.2</version>
+        <version>0.3.3</version>
         <authors>Perpetual Mobile GmbH</authors>
         <owners>Perpetual Mobile GmbH</owners>
 		    <projectUrl>https://github.com/perpetual-mobile/SimpleLocation</projectUrl>
@@ -10,6 +10,8 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Simple platform independent location manager for iOS and Android (Xamarin)</description>
         <releaseNotes>
+          Version 0.3.3
+              - Added dummy implementation for .NET
           Version 0.3.2
               - Added callbacks for location permission granted/denied (Android only)
               - Set Android target framework and target sdk to API 28 (Android 9)

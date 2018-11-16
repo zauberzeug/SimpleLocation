@@ -10,6 +10,8 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Simple platform independent location manager for iOS and Android (Xamarin)</description>
         <releaseNotes>
+          Version 0.3.4
+              - Change target framework for .NET project to 4.7
           Version 0.3.3
               - Added dummy implementation for .NET
           Version 0.3.2

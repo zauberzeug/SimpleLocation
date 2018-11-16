@@ -9,7 +9,7 @@
     <RootNamespace>PerpetualEngine.Location</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>SimpleLocation.iOS</AssemblyName>
-    <ReleaseVersion>0.3.4</ReleaseVersion>
+    <ReleaseVersion>0.3.5</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

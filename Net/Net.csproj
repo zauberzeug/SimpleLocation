@@ -5,7 +5,7 @@
     <OutputType>Library</OutputType>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <RootNamespace>Net</RootNamespace>
-    <ReleaseVersion>0.3.4</ReleaseVersion>
+    <ReleaseVersion>0.3.5</ReleaseVersion>
     <AssemblyName>SimpleLocation.Net</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

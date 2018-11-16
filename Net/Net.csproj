@@ -3,7 +3,7 @@
   <PropertyGroup>
     <ProjectGuid>{666D1CD0-30A2-4F11-A2BE-03113FBDD52B}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <RootNamespace>Net</RootNamespace>
     <ReleaseVersion>0.3.4</ReleaseVersion>
     <AssemblyName>SimpleLocation.Net</AssemblyName>

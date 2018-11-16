@@ -1,8 +1,9 @@
 #!/bin/bash
 
 echo "Don't forget"
-echo "  * to build in Release mode,"
-echo "  * to increase the nuspec version!"
+echo "  * to build in Release mode"
+echo "  * to increase the nuspec version"
+echo "  * to add change log"
 echo "Continue? [y|n]"
 
 read -e -n1 choice

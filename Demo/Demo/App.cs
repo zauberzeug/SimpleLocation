@@ -6,6 +6,7 @@ namespace Demo
 {
     public class App : Application
     {
+        const int fontSize = 18;
         const string hello = "Hello, SimpleLocation!";
         const string started = "Location updates started";
         const string stopped = "Location updates stopped";
@@ -57,7 +58,7 @@ namespace Demo
         public void StartLocationUpdates()
         {
             SimpleLocationManager.StartLocationUpdates(
-                LocationAccuracy.High, 0, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1));
+                LocationAccuracy.High, 0, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
         }
 
         public void StopLocationUpdates()
@@ -74,7 +75,7 @@ namespace Demo
                 latitudeLabel.Text = string.Format("Latitude: {0}", SimpleLocationManager.LastLocation.Latitude);
                 longitudeLabel.Text = string.Format("Longitude: {0}", SimpleLocationManager.LastLocation.Longitude);
                 directionLabel.Text = string.Format("Direction: {0} deg", SimpleLocationManager.LastLocation.Direction);
-                speedLabel.Text = string.Format("Speed: {0} m/s", SimpleLocationManager.LastLocation.Speed);
+                speedLabel.Text = string.Format("Speed: {0} km/h", SimpleLocationManager.LastLocation.Speed * 3.6);
 
                 Console.WriteLine(SimpleLocationManager.LastLocation);
             };
@@ -85,20 +86,22 @@ namespace Demo
             helloLabel = new Label {
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.StartAndExpand,
+                FontSize = fontSize,
                 Text = hello,
             };
 
-            latitudeLabel = new Label();
+            latitudeLabel = new Label { FontSize = fontSize };
 
-            longitudeLabel = new Label();
+            longitudeLabel = new Label { FontSize = fontSize };
 
-            directionLabel = new Label();
+            directionLabel = new Label { FontSize = fontSize };
 
-            speedLabel = new Label();
+            speedLabel = new Label { FontSize = fontSize };
 
             infoLabel = new Label {
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.EndAndExpand,
+                FontSize = fontSize
             };
 
             startButton = new Button {

@@ -170,6 +170,7 @@ namespace PerpetualEngine.Location
             LastLocation = new Location(location.Latitude, location.Longitude);
             LastLocation.Direction = location.Bearing;
             LastLocation.Speed = location.Speed;
+            LastLocation.Accuracy = location.Accuracy;
             LocationUpdated();
         }
 

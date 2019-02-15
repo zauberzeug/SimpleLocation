@@ -78,6 +78,10 @@ namespace PerpetualEngine.Location
                     LastLocation = new Location(location.Coordinate.Latitude, location.Coordinate.Longitude);
                     LastLocation.Direction = location.Course >= 0 ? location.Course : 0;
                     LastLocation.Speed = location.Speed >= 0 ? location.Speed : 0;
+                    if (location.VerticalAccuracy < 0 || location.HorizontalAccuracy < 0) // accurary can be invalid
+                        LastLocation.Accuracy = -1;
+                    else
+                        LastLocation.Accuracy = Math.Max(location.VerticalAccuracy, location.HorizontalAccuracy);
                     LocationUpdated();
                 };
 

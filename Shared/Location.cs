@@ -8,6 +8,7 @@ namespace PerpetualEngine.Location
         double longitude;
         double direction;
         double speed;
+        double accuracy;
 
         public Location(double latitude, double longitude)
         {
@@ -49,6 +50,15 @@ namespace PerpetualEngine.Location
         public double Speed { 
             get{ return speed; }
             set{ speed = Math.Round(value, 2); }
+        }
+
+        /// <summary>
+        /// Accuracy of measurement in meters
+        /// </summary>
+        public double Accuracy
+        {
+            get { return accuracy; }
+            set { accuracy = Math.Round(value, 2); }
         }
 
         public override string ToString()

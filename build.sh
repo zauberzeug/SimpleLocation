@@ -27,9 +27,9 @@ $NUGET restore SimpleLocation.sln || exit 1
 
 msbuild /p:Configuration=Release Droid/Droid.csproj || exit 1
 msbuild /p:Configuration=Release iOS/iOS.csproj || exit 1
-msbuild /p:Configuration=Release Net/Net.csproj || exit 1
+msbuild Net/Net.csproj || exit 1
 
-sed -i '' "s/\(<PackageVersion>\).*\(<\/PackageVersion>\)/\1$VERSION\2/" SimpleLocation.nuspec
+sed -i '' "s/\(<version>\).*\(<\/version>\)/\1$VERSION\2/" SimpleLocation.nuspec
 $NUGET pack SimpleLocation.nuspec || exit 1
 
 publishNuGet SimpleLocation.*.nupkg

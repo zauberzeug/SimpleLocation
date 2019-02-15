@@ -56,6 +56,7 @@
     <files>
         <file src="Droid/bin/Release/SimpleLocation.Droid.dll" target="lib/MonoAndroid" />
         <file src="iOS/bin/Release/SimpleLocation.iOS.dll" target="lib/Xamarin.iOS10" />
-        <file src="Net/bin/Release/SimpleLocation.Net.dll" target="lib/net47" />
+        <file src="Net/bin/Debug/SimpleLocation.Net.dll" target="lib/net47" />
+        <file src="Net/bin/Debug/SimpleLocation.Net.pdb" target="lib/net47" />
     </files>
 </package>

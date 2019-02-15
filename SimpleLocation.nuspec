@@ -10,6 +10,8 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Simple platform independent location manager for iOS and Android (Xamarin)</description>
         <releaseNotes>
+          Version 0.3.6
+              - Added accuracy information for each location
           Version 0.3.5
               - Add missing dll for .NET
           Version 0.3.4

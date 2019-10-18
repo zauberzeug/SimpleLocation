@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Demo.MainPage"
+    Visual="Material">
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"
+                     Padding="20">
+            <Label Text="Hello, SimpleLocation!"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   FontAttributes="Bold"
+                   FontSize="Large"/>
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

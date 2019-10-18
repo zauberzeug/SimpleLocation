@@ -77,6 +77,12 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\packages\Xamarin.Forms.4.2.0.848062\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
+    <Reference Include="MaterialComponents">
+      <HintPath>..\..\packages\Xamarin.iOS.MaterialComponents.72.2.0.1\lib\Xamarin.iOS\MaterialComponents.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Material">
+      <HintPath>..\..\packages\Xamarin.Forms.Visual.Material.4.2.0.848062\lib\Xamarin.iOS10\Xamarin.Forms.Material.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default.png" />

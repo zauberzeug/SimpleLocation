@@ -16,6 +16,7 @@ namespace Demo.iOS
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
             Forms.Init();
+            FormsMaterial.Init();
 
             SimpleLocationManager.RequestAlwaysAuthorization = true;
 

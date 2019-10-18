@@ -196,6 +196,9 @@
     <Reference Include="Xamarin.Android.Support.CustomTabs">
       <HintPath>..\..\packages\Xamarin.Android.Support.CustomTabs.28.0.0.3\lib\monoandroid90\Xamarin.Android.Support.CustomTabs.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Forms.Material">
+      <HintPath>..\..\packages\Xamarin.Forms.Visual.Material.4.2.0.848062\lib\MonoAndroid90\Xamarin.Forms.Material.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
@@ -273,4 +276,5 @@
   <Import Project="..\..\packages\Xamarin.Android.Support.Design.28.0.0.3\build\monoandroid90\Xamarin.Android.Support.Design.targets" Condition="Exists('..\..\packages\Xamarin.Android.Support.Design.28.0.0.3\build\monoandroid90\Xamarin.Android.Support.Design.targets')" />
   <Import Project="..\..\packages\Xamarin.Android.Support.v7.MediaRouter.28.0.0.3\build\monoandroid90\Xamarin.Android.Support.v7.MediaRouter.targets" Condition="Exists('..\..\packages\Xamarin.Android.Support.v7.MediaRouter.28.0.0.3\build\monoandroid90\Xamarin.Android.Support.v7.MediaRouter.targets')" />
   <Import Project="..\..\packages\Xamarin.Forms.4.2.0.848062\build\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.4.2.0.848062\build\Xamarin.Forms.targets')" />
+  <Import Project="..\..\packages\Xamarin.Forms.Visual.Material.4.2.0.848062\build\MonoAndroid10\Xamarin.Forms.Visual.Material.targets" Condition="Exists('..\..\packages\Xamarin.Forms.Visual.Material.4.2.0.848062\build\MonoAndroid10\Xamarin.Forms.Visual.Material.targets')" />
 </Project>

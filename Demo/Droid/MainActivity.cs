@@ -23,6 +23,7 @@ namespace Demo.Droid
             base.OnCreate(savedInstanceState);
 
             Forms.Init(this, savedInstanceState);
+            FormsMaterial.Init(this, savedInstanceState);
 
             SimpleLocationManager.SetContext(this);
             SimpleLocationManager.HowOftenShowUseLocationDialog = SimpleLocationManager.ShowUseLocationDialog.Once;

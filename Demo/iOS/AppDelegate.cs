@@ -21,20 +21,24 @@ namespace Demo.iOS
             SimpleLocationManager.RequestAlwaysAuthorization = true;
 
             var app = new App();
-            app.startButton.Clicked += delegate {
-                app.StartLocationUpdates();   
+            app.startButton.Clicked += delegate
+            {
+                app.StartLocationUpdates();
             };
-            app.stopButton.Clicked += delegate {
-                app.StopLocationUpdates();  
+            app.stopButton.Clicked += delegate
+            {
+                app.StopLocationUpdates();
             };
-            app.SimpleLocationManager.LocationUpdated += delegate {
+            app.SimpleLocationManager.LocationUpdated += delegate
+            {
                 var locationDataString = string.Format(
-                                             "New location:\nLat={0}\nLng={1}", 
+                                             "New location:\nLat={0}\nLng={1}",
                                              app.SimpleLocationManager.LastLocation.Latitude,
                                              app.SimpleLocationManager.LastLocation.Longitude);
                 locationsLog += string.Format("{0}\n{1}\n\n", DateTime.Now, locationDataString);
             };
-            app.SimpleLocationManager.LocationUpdatesStopped += delegate {
+            app.SimpleLocationManager.LocationUpdatesStopped += delegate
+            {
                 LogLocationUpdates();
             };
 

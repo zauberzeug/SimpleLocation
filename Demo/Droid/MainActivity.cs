@@ -2,7 +2,6 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Demo;
 using PerpetualEngine.Location;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
@@ -33,13 +32,16 @@ namespace Demo.Droid
             app = new App();
             BackgroundLocationService.App = app;
 
-            app.startButton.Clicked += delegate {
+            app.startButton.Clicked += delegate
+            {
                 StartService(new Intent(this, typeof(BackgroundLocationService)));
             };
-            app.stopButton.Clicked += delegate {
+            app.stopButton.Clicked += delegate
+            {
                 StopService(new Intent(this, typeof(BackgroundLocationService)));
             };
-            app.SimpleLocationManager.ShowRequestPermissionRationale += delegate {
+            app.SimpleLocationManager.ShowRequestPermissionRationale += delegate
+            {
                 ShowRequestPermissionRationale();
             };
 
@@ -65,7 +67,8 @@ namespace Demo.Droid
             var alert = new AlertDialog.Builder(this);
             alert.SetTitle("Permission explanation");
             alert.SetMessage("Location permission is necessary to get location information");
-            alert.SetPositiveButton("OK", delegate {
+            alert.SetPositiveButton("OK", delegate
+            {
                 app.SimpleLocationManager.RequestPermission();
             });
             alert.Create().Show();

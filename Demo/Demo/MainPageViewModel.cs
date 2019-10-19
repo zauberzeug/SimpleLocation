@@ -13,6 +13,8 @@ namespace Demo
         string _buttonText = "Start";
         SimpleLocationManager _locationManager;
         bool _locationUpdatesStarted;
+        double _latitude;
+        double _longitude;
 
         public MainPageViewModel(SimpleLocationManager locationManager)
         {
@@ -24,6 +26,32 @@ namespace Demo
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand ToggleButtonCommand { get; private set; }
+
+        public double Latitude
+        {
+            get => _latitude;
+            set
+            {
+                if (_latitude == value)
+                    return;
+
+                _latitude = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double Longitude
+        {
+            get => _longitude;
+            set
+            {
+                if (_longitude == value)
+                    return;
+
+                _longitude = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Color ButtonColor
         {
@@ -56,7 +84,7 @@ namespace Demo
             _locationManager = locationManager;
             _locationManager.LocationUpdatesStarted += OnLocationUpdatesStarted;
             _locationManager.LocationUpdatesStopped += OnLocationUpdatesStopped;
-            _locationManager.LocationUpdated += () => Console.WriteLine(_locationManager.LastLocation);
+            _locationManager.LocationUpdated += OnLocationUpdated;
         }
 
         void OnLocationUpdatesStarted()
@@ -71,6 +99,14 @@ namespace Demo
             _locationUpdatesStarted = false;
             ButtonColor = Color.Green;
             ButtonText = "Start";
+        }
+
+        void OnLocationUpdated()
+        {
+            var lastLocation = _locationManager.LastLocation;
+            Latitude = lastLocation.Latitude;
+            Longitude = lastLocation.Longitude;
+            Console.WriteLine(lastLocation);
         }
 
         void ToggleLocationUpdates()

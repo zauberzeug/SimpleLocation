@@ -1,13 +1,11 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PerpetualEngine.Location;
 using Xamarin.Forms;
 
 namespace Demo
 {
-    public class MainPageViewModel : INotifyPropertyChanged
+    public class MainPageViewModel : BaseViewModel
     {
         Color _buttonColor = Color.Green;
         string _buttonText = "Start";
@@ -23,60 +21,31 @@ namespace Demo
             ToggleButtonCommand = new Command(ToggleLocationUpdates);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand ToggleButtonCommand { get; private set; }
 
         public double Latitude
         {
             get => _latitude;
-            set
-            {
-                if (_latitude == value)
-                    return;
-
-                _latitude = value;
-                OnPropertyChanged();
-            }
+            set => SetValue(ref _latitude, value);
         }
 
         public double Longitude
         {
             get => _longitude;
-            set
-            {
-                if (_longitude == value)
-                    return;
-
-                _longitude = value;
-                OnPropertyChanged();
-            }
+            set => SetValue(ref _longitude, value);
         }
 
         public Color ButtonColor
         {
             get => _buttonColor;
-            set
-            {
-                if (_buttonColor == value)
-                    return;
-
-                _buttonColor = value;
-                OnPropertyChanged();
-            }
+            set => SetValue(ref _buttonColor, value);
         }
 
         public string ButtonText
         {
             get => _buttonText;
-            set
-            {
-                if (_buttonText == value)
-                    return;
-
-                _buttonText = value;
-                OnPropertyChanged();
-            }
+            set => SetValue(ref _buttonText, value);
         }
 
         void InitLocationManager(SimpleLocationManager locationManager)
@@ -115,11 +84,6 @@ namespace Demo
                 _locationManager.StopLocationUpdates();
             else
                 _locationManager.StartLocationUpdates(LocationAccuracy.High, 0, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
-        }
-
-        void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

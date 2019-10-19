@@ -10,9 +10,14 @@
                      Padding="20">
             <Label Text="Hello, SimpleLocation!"
                    HorizontalOptions="Center"
-                   VerticalOptions="Start"
+                   VerticalOptions="StartAndExpand"
                    FontAttributes="Bold"
                    FontSize="Large"/>
+            <Button Text="Start"
+                    HorizontalOptions="Center"
+                    VerticalOptions="EndAndExpand"
+                    BackgroundColor="Green"
+                    TextColor="White"/>
             
         </StackLayout>
     </ContentPage.Content>

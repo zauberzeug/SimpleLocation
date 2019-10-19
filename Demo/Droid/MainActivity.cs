@@ -32,14 +32,6 @@ namespace Demo.Droid
             app = new App();
             BackgroundLocationService.App = app;
 
-            app.startButton.Clicked += delegate
-            {
-                StartService(new Intent(this, typeof(BackgroundLocationService)));
-            };
-            app.stopButton.Clicked += delegate
-            {
-                StopService(new Intent(this, typeof(BackgroundLocationService)));
-            };
             app.SimpleLocationManager.ShowRequestPermissionRationale += delegate
             {
                 ShowRequestPermissionRationale();

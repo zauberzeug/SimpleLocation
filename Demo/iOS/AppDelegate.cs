@@ -21,14 +21,6 @@ namespace Demo.iOS
             SimpleLocationManager.RequestAlwaysAuthorization = true;
 
             var app = new App();
-            app.startButton.Clicked += delegate
-            {
-                app.StartLocationUpdates();
-            };
-            app.stopButton.Clicked += delegate
-            {
-                app.StopLocationUpdates();
-            };
             app.SimpleLocationManager.LocationUpdated += delegate
             {
                 var locationDataString = string.Format(

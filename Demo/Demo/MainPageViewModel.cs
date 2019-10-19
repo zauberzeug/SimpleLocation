@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PerpetualEngine.Location;
@@ -10,10 +11,14 @@ namespace Demo
     {
         Color _buttonColor = Color.Green;
         string _buttonText = "Start";
+        SimpleLocationManager _locationManager;
+        bool _locationUpdatesStarted;
 
         public MainPageViewModel(SimpleLocationManager locationManager)
         {
-            ToggleButtonCommand = new Command(() => ToggleButton());
+            InitLocationManager(locationManager);
+
+            ToggleButtonCommand = new Command(ToggleLocationUpdates);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -46,15 +51,35 @@ namespace Demo
             }
         }
 
-        void ToggleButton()
+        void InitLocationManager(SimpleLocationManager locationManager)
         {
-            ToggleButtonColor();
-            ToggleButtonText();
+            _locationManager = locationManager;
+            _locationManager.LocationUpdatesStarted += OnLocationUpdatesStarted;
+            _locationManager.LocationUpdatesStopped += OnLocationUpdatesStopped;
+            _locationManager.LocationUpdated += () => Console.WriteLine(_locationManager.LastLocation);
         }
 
-        void ToggleButtonColor() => ButtonColor = ButtonColor == Color.Green ? Color.Red : Color.Green;
+        void OnLocationUpdatesStarted()
+        {
+            _locationUpdatesStarted = true;
+            ButtonColor = Color.Red;
+            ButtonText = "Stop";
+        }
 
-        void ToggleButtonText() => ButtonText = ButtonText == "Start" ? "Stop" : "Start";
+        void OnLocationUpdatesStopped()
+        {
+            _locationUpdatesStarted = false;
+            ButtonColor = Color.Green;
+            ButtonText = "Start";
+        }
+
+        void ToggleLocationUpdates()
+        {
+            if (_locationUpdatesStarted)
+                _locationManager.StopLocationUpdates();
+            else
+                _locationManager.StartLocationUpdates(LocationAccuracy.High, 0, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+        }
 
         void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

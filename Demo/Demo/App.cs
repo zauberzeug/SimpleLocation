@@ -10,8 +10,7 @@ namespace Demo
 
         public App()
         {
-            InitSimpleLocationManager();
-
+            SimpleLocationManager = new SimpleLocationManager();
             MainPageViewModel viewModel = new MainPageViewModel(SimpleLocationManager);
             MainPage = new MainPage(viewModel);
         }
@@ -24,14 +23,6 @@ namespace Demo
         public void StopLocationUpdates()
         {
             SimpleLocationManager.StopLocationUpdates();
-        }
-
-        void InitSimpleLocationManager()
-        {
-            SimpleLocationManager = new SimpleLocationManager();
-            SimpleLocationManager.LocationUpdatesStarted += () => { };
-            SimpleLocationManager.LocationUpdatesStopped += () => { };
-            SimpleLocationManager.LocationUpdated += () => Console.WriteLine(SimpleLocationManager.LastLocation);
         }
     }
 }

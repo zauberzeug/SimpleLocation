@@ -13,11 +13,12 @@
                    VerticalOptions="StartAndExpand"
                    FontAttributes="Bold"
                    FontSize="Large"/>
-            <Button Text="Start"
+            <Button Text="{Binding ButtonText, Mode=TwoWay}"
                     HorizontalOptions="Center"
                     VerticalOptions="EndAndExpand"
-                    BackgroundColor="Green"
-                    TextColor="White"/>
+                    BackgroundColor="{Binding ButtonColor, Mode=TwoWay}"
+                    TextColor="White"
+                    Command="{Binding ToggleButtonCommand}"/>
             
         </StackLayout>
     </ContentPage.Content>

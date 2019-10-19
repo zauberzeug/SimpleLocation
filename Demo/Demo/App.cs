@@ -12,7 +12,8 @@ namespace Demo
         {
             InitSimpleLocationManager();
 
-            MainPage = new MainPage();
+            MainPageViewModel viewModel = new MainPageViewModel(SimpleLocationManager);
+            MainPage = new MainPage(viewModel);
         }
 
         public void StartLocationUpdates()

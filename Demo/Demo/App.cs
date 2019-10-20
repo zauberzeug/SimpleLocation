@@ -11,7 +11,7 @@ namespace Demo
         public App()
         {
             SimpleLocationManager = new SimpleLocationManager();
-            MainPageViewModel viewModel = new MainPageViewModel(SimpleLocationManager);
+            var viewModel = new MainPageViewModel(SimpleLocationManager);
             MainPage = new MainPage(viewModel);
         }
 

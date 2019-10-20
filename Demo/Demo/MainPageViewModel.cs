@@ -13,6 +13,8 @@ namespace Demo
         bool _locationUpdatesStarted;
         double _latitude;
         double _longitude;
+        double _direction;
+        double _speed;
 
         public MainPageViewModel(SimpleLocationManager locationManager)
         {
@@ -34,6 +36,18 @@ namespace Demo
         {
             get => _longitude;
             set => SetValue(ref _longitude, value);
+        }
+
+        public double Direction
+        {
+            get => _direction;
+            set => SetValue(ref _direction, value);
+        }
+
+        public double Speed
+        {
+            get => _speed;
+            set => SetValue(ref _speed, value);
         }
 
         public Color ButtonColor
@@ -75,6 +89,8 @@ namespace Demo
             var lastLocation = _locationManager.LastLocation;
             Latitude = lastLocation.Latitude;
             Longitude = lastLocation.Longitude;
+            Direction = lastLocation.Direction;
+            Speed = lastLocation.Speed * 3.6; // km/h
             Console.WriteLine(lastLocation);
         }
 

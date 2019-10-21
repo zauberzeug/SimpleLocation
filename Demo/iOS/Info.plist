@@ -63,6 +63,8 @@
 	<string>We want ot use your location when the app is in background</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We want ot use your location when the app is in foreground</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We want to use your location</string>
 	<key>CFBundleName</key>
 	<string>SimpleLocationDemo</string>
 	<key>UIBackgroundModes</key>

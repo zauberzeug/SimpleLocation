@@ -30,11 +30,11 @@ namespace Demo.Droid
             SimpleLocationManager.ShouldShowRequestPermissionRationale = true;
 
             app = new App();
-            BackgroundLocationService.App = app;
-
             app.SimpleLocationManager.LocationUpdatesStarted += () => StartService(new Intent(this, typeof(BackgroundLocationService)));
             app.SimpleLocationManager.LocationUpdatesStopped += () => StopService(new Intent(this, typeof(BackgroundLocationService)));
             app.SimpleLocationManager.ShowRequestPermissionRationale += () => ShowRequestPermissionRationale();
+
+            BackgroundLocationService.SimpleLocationManager = app.SimpleLocationManager;
 
             LoadApplication(app);
         }

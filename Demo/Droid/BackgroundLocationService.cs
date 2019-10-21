@@ -1,11 +1,13 @@
-﻿using Android.App;
+﻿using System;
+using Android.App;
+using PerpetualEngine.Location;
 
 namespace Demo.Droid
 {
     [Service]
     public class BackgroundLocationService : Service
     {
-        public static App App;
+        public static SimpleLocationManager SimpleLocationManager;
 
         public override Android.OS.IBinder OnBind(Android.Content.Intent intent)
         {
@@ -15,14 +17,14 @@ namespace Demo.Droid
 
         public override StartCommandResult OnStartCommand(Android.Content.Intent intent, StartCommandFlags flags, int startId)
         {
-            App.StartLocationUpdates();
+            SimpleLocationManager.StartLocationUpdates(LocationAccuracy.High, 0, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
 
             return StartCommandResult.RedeliverIntent;
         }
 
         public override void OnDestroy()
         {
-            App.StopLocationUpdates();
+            SimpleLocationManager.StopLocationUpdates();
 
             base.OnDestroy();
         }

@@ -3,59 +3,44 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Demo.MainPage"
     Visual="Material">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="20, 40, 20, 20" />
+            <On Platform="Android, UWP" Value="20" />
+        </OnPlatform>
+    </ContentPage.Padding>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical"
                      HorizontalOptions="FillAndExpand"
-                     VerticalOptions="FillAndExpand"
-                     Padding="20">
+                     VerticalOptions="FillAndExpand">
             <Label Text="Hello, SimpleLocation!"
                    HorizontalOptions="Center"
                    VerticalOptions="StartAndExpand"
                    FontAttributes="Bold"
-                   FontSize="Large"/>
+                   FontSize="Large"
+                   TextColor="Black"/>
             <Label Text="Latitude:"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   FontSize="Medium"/>
+                   Style="{StaticResource infoLabel}"/>
             <Label Text="{Binding Latitude}"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   FontAttributes="Bold"
-                   FontSize="Medium"/>
+                   Style="{StaticResource valueLabel}"/>
             <Label Text="Longitude:"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   FontSize="Medium"/>
+                   Style="{StaticResource infoLabel}"/>
             <Label Text="{Binding Longitude}"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   FontAttributes="Bold"
-                   FontSize="Medium"/>
+                   Style="{StaticResource valueLabel}"/>
             <Label Text="Direction (° East of true North):"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   FontSize="Medium"/>
+                   Style="{StaticResource infoLabel}"/>
             <Label Text="{Binding Direction}"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   FontAttributes="Bold"
-                   FontSize="Medium"/>
+                   Style="{StaticResource valueLabel}"/>
             <Label Text="Speed (km/h):"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   FontSize="Medium"/>
+                   Style="{StaticResource infoLabel}"/>
             <Label Text="{Binding Speed}"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   FontAttributes="Bold"
-                   FontSize="Medium"/>
-            <Button Text="{Binding ButtonText, Mode=TwoWay}"
+                   Style="{StaticResource valueLabel}"/>
+            <Button Text="{Binding ButtonText}"
                     HorizontalOptions="Center"
                     VerticalOptions="EndAndExpand"
-                    BackgroundColor="{Binding ButtonColor, Mode=TwoWay}"
                     TextColor="White"
+                    BackgroundColor="{Binding ButtonColor}"
                     Command="{Binding ToggleButtonCommand}"/>
-            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

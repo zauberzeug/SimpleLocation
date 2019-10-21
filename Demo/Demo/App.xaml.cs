@@ -4,12 +4,14 @@ using Xamarin.Forms;
 
 namespace Demo
 {
-    public class App : Application
+    public partial class App : Application
     {
-        public SimpleLocationManager SimpleLocationManager;
+        public SimpleLocationManager SimpleLocationManager { get; private set; }
 
         public App()
         {
+            InitializeComponent();
+
             SimpleLocationManager = new SimpleLocationManager();
             var viewModel = new MainPageViewModel(SimpleLocationManager);
             MainPage = new MainPage(viewModel);
@@ -26,4 +28,3 @@ namespace Demo
         }
     }
 }
-

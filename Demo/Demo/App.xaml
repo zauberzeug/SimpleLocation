@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Demo.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Style x:Key="centeredLabel" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Center"/>                
+                <Setter Property="VerticalOptions" Value="Center"/>                
+            </Style>
+            <Style x:Key="infoLabel" TargetType="Label" BasedOn="{StaticResource centeredLabel}">
+                <Setter Property="FontSize" Value="Medium"/>                
+                <Setter Property="TextColor" Value="Gray"/>                
+            </Style>
+            <Style x:Key="valueLabel" TargetType="Label" BasedOn="{StaticResource centeredLabel}">
+                <Setter Property="FontSize" Value="Large"/>                
+                <Setter Property="FontAttributes" Value="Bold"/>  
+                <Setter Property="TextColor" Value="Black"/>                
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -16,10 +16,12 @@ echo "setting version to $VERSION"
 XAMARIN_TOOLS=/Library/Frameworks/Mono.framework/Versions/Current/Commands/
 NUGET="$XAMARIN_TOOLS/nuget"
 
-function publishNuGet {
+function setTag {
   git tag -a $VERSION -m ''  || exit 1
   git push --tags || exit 1
+}
 
+function publishNuGet {
   nuget push $1 -Source https://www.nuget.org/api/v2/package || exit 1
 }
 
@@ -31,6 +33,8 @@ msbuild Net/Net.csproj || exit 1
 
 sed -i '' "s/\(<version>\).*\(<\/version>\)/\1$VERSION\2/" SimpleLocation.nuspec
 $NUGET pack SimpleLocation.nuspec || exit 1
+
+setTag
 
 if [[ $PUBLISH_NUGET == True ]]; then
   publishNuGet SimpleLocation.*.nupkg

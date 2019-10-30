@@ -32,4 +32,6 @@ msbuild Net/Net.csproj || exit 1
 sed -i '' "s/\(<version>\).*\(<\/version>\)/\1$VERSION\2/" SimpleLocation.nuspec
 $NUGET pack SimpleLocation.nuspec || exit 1
 
-publishNuGet SimpleLocation.*.nupkg
+if [[ $PUBLISH_NUGET == True ]]; then
+  publishNuGet SimpleLocation.*.nupkg
+fi

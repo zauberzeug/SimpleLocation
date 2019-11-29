@@ -12,5 +12,11 @@ namespace PerpetualEngine.Location
         public void StopLocationUpdates()
         {
         }
+
+        public void SimulateNewLocation(Location l)
+        {
+            LastLocation = l;
+            LocationUpdated();
+        }
     }
 }

@@ -24,9 +24,9 @@ namespace PerpetualEngine.Location
             InitLocationManager();
         }
 
-        public event Action<object, CLAuthorizationChangedEventArgs> AuthorizationChanged = delegate{};
+        public event Action<object, CLAuthorizationChangedEventArgs> AuthorizationChanged = delegate { };
 
-        public static bool RequestAlwaysAuthorization{ get; set; } = false;
+        public static bool RequestAlwaysAuthorization { get; set; } = false;
 
         public static bool PausesLocationUpdatesAutomatically { get; set; } = false;
 
@@ -55,23 +55,10 @@ namespace PerpetualEngine.Location
         {
             if (locationManager == null) {
                 locationManager = new CLLocationManager();
-                locationManager.AuthorizationChanged += (sender, e) => {
-                    AuthorizationChanged(sender, e);
-                    if (isInitializing) { // Necessary because AuthorizationChanged get's called even on App start
-                        isInitializing = false;
-                        return;
-                    }
-
-                    SimpleLocationLogger.Log("Authorization changed to " + e.Status);
-
-                    if (AppHasLocationPermission()) {
-                        if (shouldBeUpdatingLocation)
-                            TryToStartUpdates();
-                    } else {
-                        StopLocationUpdates();
-                        TriggerAppPermissionDialog();
-                    }
-                };
+                if (UIDevice.CurrentDevice.CheckSystemVersion(14, 0))
+                    locationManager.DidChangeAuthorization += (sender, e) => OnAuthorizationChanged(sender, new CLAuthorizationChangedEventArgs(locationManager.AuthorizationStatus));
+                else
+                    locationManager.AuthorizationChanged += OnAuthorizationChanged;
 
                 locationManager.LocationsUpdated += (sender, e) => {
                     var location = e.Locations.Last();
@@ -90,14 +77,33 @@ namespace PerpetualEngine.Location
             }
         }
 
+        void OnAuthorizationChanged(object sender, CLAuthorizationChangedEventArgs e)
+        {
+            AuthorizationChanged(sender, e);
+            if (isInitializing) { // Necessary because AuthorizationChanged get's called even on App start
+                isInitializing = false;
+                return;
+            }
+
+            SimpleLocationLogger.Log("Authorization changed to " + e.Status);
+
+            if (AppHasLocationPermission()) {
+                if (shouldBeUpdatingLocation)
+                    TryToStartUpdates();
+            } else {
+                StopLocationUpdates();
+                TriggerAppPermissionDialog();
+            }
+        }
+
         void TryToStartUpdates()
         {
             if (GlobalLocationServicesEnabled()) {
                 if (AppHasLocationPermission()) {
-                    locationManager.StartUpdatingLocation(); 
+                    locationManager.StartUpdatingLocation();
                     LocationUpdatesStarted();
                 } else {
-                    TriggerAppPermissionDialog();                   
+                    TriggerAppPermissionDialog();
                 }
             } else {
                 TriggerGlobalPermissionDialog();

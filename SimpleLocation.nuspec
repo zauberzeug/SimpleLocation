@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>SimpleLocation</id>
-        <version>0.3.5</version>
+        <version>0.3.7</version>
         <authors>Perpetual Mobile GmbH</authors>
         <owners>Perpetual Mobile GmbH</owners>
 		    <projectUrl>https://github.com/perpetual-mobile/SimpleLocation</projectUrl>
@@ -14,6 +14,7 @@
 	      - Upgraded to GooglePlayServices 117.1.0
 	      - Set Android target framework and target sdk to API 29 (Android 10)
 	      - AndroidX
+	      - iOS 14
           Version 0.3.6
               - Added accuracy information for each location
           Version 0.3.5

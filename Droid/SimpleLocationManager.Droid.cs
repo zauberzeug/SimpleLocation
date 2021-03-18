@@ -8,8 +8,8 @@ using Android.Gms.Common;
 using Android.Gms.Common.Apis;
 using Android.Gms.Location;
 using Android.OS;
-using AndroidX.Core.App;
-using AndroidX.Core.Content;
+using Android.Support.V4.App;
+using Android.Support.V4.Content;
 
 namespace PerpetualEngine.Location
 {
@@ -46,13 +46,16 @@ namespace PerpetualEngine.Location
                 .Build();
         }
 
-        public event Action PermissionDenied = delegate {
+        public event Action PermissionDenied = delegate
+        {
         };
 
-        public event Action PermissionGranted = delegate {
+        public event Action PermissionGranted = delegate
+        {
         };
 
-        public Action ShowRequestPermissionRationale = delegate {
+        public Action ShowRequestPermissionRationale = delegate
+        {
         };
 
         public enum ShowUseLocationDialog
@@ -82,12 +85,17 @@ namespace PerpetualEngine.Location
             this.interval = (long)(interval ?? TimeSpan.FromHours(1)).TotalMilliseconds;
             this.fastestInterval = (long)(fastestInterval ?? TimeSpan.FromMinutes(10)).TotalMilliseconds;
 
-            if (HandleLocationPermission && context != null && context is Activity) {
-                if (ContextCompat.CheckSelfPermission(context, locationPermission) != (int)Permission.Granted) {
-                    if (ShouldShowRequestPermissionRationale && ActivityCompat.ShouldShowRequestPermissionRationale(context as Activity, locationPermission)) {
+            if (HandleLocationPermission && context != null && context is Activity)
+            {
+                if (ContextCompat.CheckSelfPermission(context, locationPermission) != (int)Permission.Granted)
+                {
+                    if (ShouldShowRequestPermissionRationale && ActivityCompat.ShouldShowRequestPermissionRationale(context as Activity, locationPermission))
+                    {
                         ShowRequestPermissionRationale();
                         return;
-                    } else {
+                    }
+                    else
+                    {
                         RequestPermission();
                         return;
                     }
@@ -127,20 +135,25 @@ namespace PerpetualEngine.Location
             if (resolvingError)
                 return; // Already attempting to resolve an error.
 
-            if (!(context is Activity)) {
+            if (!(context is Activity))
+            {
                 SimpleLocationLogger.Log("Connection failed. Error: " + result.ErrorCode);
                 return;
             }
 
             if (result.HasResolution)
-                try {
+                try
+                {
                     resolvingError = true;
                     result.StartResolutionForResult(context as Activity, requestResolveError);
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     SimpleLocationLogger.Log("Connection failed. Error: " + e.Message);
                     googleApiClient.Connect(); // There was an error with the resolution intent. Try again.
                 }
-            else {
+            else
+            {
                 var dialog = GoogleApiAvailability.Instance.GetErrorDialog(context as Activity, result.ErrorCode, requestResolveError);
                 dialog.DismissEvent += (sender, e) => resolvingError = false;
                 dialog.Show();
@@ -166,18 +179,22 @@ namespace PerpetualEngine.Location
             var locationSettingsResult = result as LocationSettingsResult;
 
             var status = locationSettingsResult.Status;
-            switch (status.StatusCode) {
+            switch (status.StatusCode)
+            {
                 case CommonStatusCodes.Success:
                     SimpleLocationLogger.Log("All location settings are satisfied");
                     StartUpdates();
                     break;
                 case CommonStatusCodes.ResolutionRequired:
                     SimpleLocationLogger.Log("Location settings are not satisfied");
-                    try {
+                    try
+                    {
                         if (context is Activity)
                             status.StartResolutionForResult(context as Activity, requestCheckSettings);
                         // Handle result in OnActivityResult of your Activity by calling HandleResolutionResultForLocationSettings
-                    } catch (IntentSender.SendIntentException) {
+                    }
+                    catch (IntentSender.SendIntentException)
+                    {
                         SimpleLocationLogger.Log("PendingIntent unable to execute request");
                     }
                     break;
@@ -189,9 +206,11 @@ namespace PerpetualEngine.Location
 
         public void HandleResolutionResultForLocationSettings(int requestCode, Result resultCode)
         {
-            switch (requestCode) {
+            switch (requestCode)
+            {
                 case requestCheckSettings:
-                    switch (resultCode) {
+                    switch (resultCode)
+                    {
                         case Result.Ok:
                             SimpleLocationLogger.Log("User agreed to make required location settings changes");
                             StartUpdates();
@@ -208,12 +227,17 @@ namespace PerpetualEngine.Location
 
         public void HandleResultForLocationPermissionRequest(int requestCode, string[] permissions, Permission[] grantResults)
         {
-            switch (requestCode) {
-                case locationPermissionId: {
-                        if (grantResults.Length > 0 && grantResults[0] == Permission.Granted) {
+            switch (requestCode)
+            {
+                case locationPermissionId:
+                    {
+                        if (grantResults.Length > 0 && grantResults[0] == Permission.Granted)
+                        {
                             googleApiClient.Connect();
                             PermissionGranted();
-                        } else if (grantResults.Length > 0 && grantResults[0] == Permission.Denied) {
+                        }
+                        else if (grantResults.Length > 0 && grantResults[0] == Permission.Denied)
+                        {
                             PermissionDenied();
                         }
 
@@ -242,7 +266,8 @@ namespace PerpetualEngine.Location
 
         void CheckLocationServicesEnabled()
         {
-            if (showUseLocationDialog) {
+            if (showUseLocationDialog)
+            {
                 var result = LocationServices.SettingsApi.CheckLocationSettings(googleApiClient, CreateLocationSettingsRequestBuilder().Build());
                 result.SetResultCallback(this);
             }
@@ -254,9 +279,12 @@ namespace PerpetualEngine.Location
             if (location != null)
                 LastLocation = new Location(location.Latitude, location.Longitude);
 
-            try {
+            try
+            {
                 LocationServices.FusedLocationApi.RequestLocationUpdates(googleApiClient, CreateLocationRequest(), this);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 SimpleLocationLogger.Log("Requesting location updates failed. Message: " + e.Message);
                 SimpleLocationLogger.Log("Stack trace: " + System.Environment.StackTrace);
             }

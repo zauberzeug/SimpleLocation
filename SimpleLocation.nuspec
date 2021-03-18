@@ -10,7 +10,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Simple platform independent location manager for iOS and Android (Xamarin)</description>
         <releaseNotes>
-          Version 0.3.21
+          Version 0.3.23
               - Added support for iOS14
           Version 0.3.6
               - Added accuracy information for each location

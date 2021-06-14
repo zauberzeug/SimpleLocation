@@ -18,7 +18,7 @@ NUGET="$XAMARIN_TOOLS/nuget"
 
 function setTag {
   git tag -a $VERSION -m ''  || exit 1
-  # git push --tags || exit 1
+  git push --tags || exit 1
 }
 
 function publishNuGet {
@@ -34,7 +34,7 @@ msbuild Net/Net.csproj || exit 1
 sed -i '' "s/\(<version>\).*\(<\/version>\)/\1$VERSION\2/" SimpleLocation.nuspec
 $NUGET pack SimpleLocation.nuspec || exit 1
 
-setTag
+# setTag
 
 if [[ $PUBLISH_NUGET == True ]]; then
   publishNuGet SimpleLocation.*.nupkg
